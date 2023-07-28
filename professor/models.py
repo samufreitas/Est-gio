@@ -41,23 +41,6 @@ class PeriodoDisc(models.Model):
         return f'{self.disciplina.nome} do {self.periodo.descricao}'
 
 
-class Plano(models.Model):
-    titulo = models.CharField('Titulo', max_length=150)
-    resumo = models.TextField('Resumo', blank=False, null=True)  # blank= não obrigatorio/null=aceita valor nulo
-    objetivo = models.TextField('Objetivo', blank=False, null=True)  # blank= não obrigatorio/null=aceita valor nulo
-    obj_especifico = models.TextField('Objetivo especifico', blank=False, null=True)  # blank= não obrigatorio/null=aceita valor nulo
-    motivacao = models.TextField('Motivação', blank=False, null=True)  # blank= não obrigatorio/null=aceita valor nulo
-    status = models.CharField('Status', max_length=150)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Atributo de chave estrageira
-
-    class Meta:
-        verbose_name = 'Plano'
-        verbose_name_plural = 'Planos'
-        ordering = ['id']
-
-    # Retorna o nome da categoria
-    def __str__(self):
-        return self.titulo
 
 
 class Trabalho(models.Model):

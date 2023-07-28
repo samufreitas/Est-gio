@@ -11,7 +11,7 @@ from .forms import UserForm
 # Create your views here.
 
 def add_user(request):
-    template_name = 'accounts/add_user.html'
+    template_name = 'add_user.html'
     context = {}
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -19,6 +19,7 @@ def add_user(request):
             f = form.save(commit=False)
             f.set_password(f.password)
             f.save()
+            form.save_m2m()
             messages.success(request, 'Usuário salvo com sucesso!')
     form = UserForm()
     context['form'] = form
@@ -26,7 +27,7 @@ def add_user(request):
 
 
 def user_new_password(request):
-    template_name = 'accounts/user_new_password.html'
+    template_name = 'user_new_password.html'
     context = {}
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
@@ -34,7 +35,12 @@ def user_new_password(request):
             form.save()
             messages.success(request, "Senha alterada com sucesso!")
             update_session_auth_hash(request, form.user)
-            return redirect(request.GET.get('next', '/'))
+            if form.user.groups.filter(name='Aluno').exists():
+                return redirect('aluno:add_plano')
+            elif form.user.groups.filter(name='Professor').exists():
+                return redirect('accounts:add_user')
+            elif form.user.groups.filter(name='Orientador').exists():
+                return redirect('aluno:list_plano')
         else:
             messages.error(request, "Não foi possível trocar sua senha!")
     form = PasswordChangeForm(user=request.user)
@@ -44,7 +50,7 @@ def user_new_password(request):
 
 
 def user_login(request):
-    template_name = 'accounts/user_login.html'
+    template_name = 'user_login.html'
 
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -56,7 +62,12 @@ def user_login(request):
                 return redirect('accounts:user_new_password')
         if user is not None:
             login(request, user)
-            return redirect(request.GET.get('next', '/'))
+            if user.groups.filter(name='Aluno').exists():
+                return redirect('aluno:add_plano')
+            elif user.groups.filter(name='Professor').exists():
+                return redirect('accounts:add_user')
+            elif user.groups.filter(name='Orientador').exists():
+                return redirect('aluno:list_plano')
         else:
             messages.error(request, "Usuário ou senha inválidos.")
     return render(request, template_name, {})
