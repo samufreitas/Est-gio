@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar Usuário</title>
+
+</head>
+<body>
+    <img src="{% static 'imag/logo.png' %}" alt="Minha imagem">
+    <h2>Cadastrar Usuário</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>
