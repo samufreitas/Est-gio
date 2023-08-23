@@ -19,7 +19,7 @@ from professor.models import PeriodoDisc
 
 
 class Plano(models.Model):
-    titulo = models.CharField('Titulo', max_length=150)
+    tema = models.CharField('Tema', max_length=150)
     resumo = models.TextField('Resumo', blank=False, null=True)
     objetivo = models.TextField('Objetivo', blank=False, null=True)
     obj_especifico = models.TextField('Objetivo especifico', blank=False, null=True)
@@ -28,6 +28,7 @@ class Plano(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='planos')
     user_orientador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='planos_orientados')
     periodo = models.ForeignKey(PeriodoDisc, on_delete=models.CASCADE)
+    arquivo = models.FileField(upload_to='plano_pdf')
 
     class Meta:
         verbose_name = 'Plano'
@@ -36,21 +37,21 @@ class Plano(models.Model):
 
     # Retorna apenas o nome do Plano
     def __str__(self):
-        return self.titulo
+        return self.tema
 
 class Trabalho(models.Model):
     titulo = models.CharField('Titulo', max_length=60)
     orientador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Orientador')
     prof1 = models.CharField('Professor1', max_length=60)
     prof2 = models.CharField('Professor2', max_length=60)
-    prof3 = models.CharField('Professor3', max_length=60)
+    prof3 = models.CharField('Professor3', max_length=60, blank=False, null=True)
     data = models.DateField()
     resumo = models.TextField('Resumo')  # blank= não obrigatorio/null=aceita valor nulo
     palavras_ch = models.CharField('Palavras chaves', max_length=60)
     periodo = models.ForeignKey(PeriodoDisc, on_delete=models.RESTRICT)
     user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='Autor')
     arquivo = models.FileField('Arquivo', upload_to="Trabalhos/")
-
+    status = models.CharField('Status', max_length=150)
     class Meta:
         verbose_name = 'Trabalho'
         verbose_name_plural = 'Trabalhos'

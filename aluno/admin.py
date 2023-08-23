@@ -3,7 +3,7 @@ from .models import Plano, Trabalho
 # Register your models here.
 
 class PlanoAdmin(admin.ModelAdmin):
-    list_display = ['titulo', 'resumo', 'objetivo', 'obj_especifico', 'motivacao', 'status', 'user']
+    list_display = ['tema', 'resumo', 'objetivo', 'obj_especifico', 'motivacao', 'status', 'user']
 
 admin.site.register(Plano, PlanoAdmin)
 

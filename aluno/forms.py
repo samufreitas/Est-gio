@@ -15,11 +15,11 @@ class PlanoForm(forms.ModelForm):
 
     class Meta:
         model = Plano
-        fields = ['titulo', 'resumo', 'objetivo', 'obj_especifico', 'motivacao', 'user_orientador', 'periodo']
+        fields = ['tema', 'resumo', 'objetivo', 'obj_especifico', 'motivacao', 'user_orientador', 'periodo']
 
     def clean(self):
         cleaned_data = super().clean()
-        titulo = cleaned_data.get("titulo")
+        tema = cleaned_data.get("tema")
         resumo = cleaned_data.get("resumo")
         objetivo = cleaned_data.get("objetivo")
         obj_especifico = cleaned_data.get("obj_especifico")
@@ -27,9 +27,9 @@ class PlanoForm(forms.ModelForm):
         user_orientador = cleaned_data.get("user_orientador")
         periodo = cleaned_data.get("periodo")
 
-        if not titulo:
+        if not tema:
             raise ValidationError("Campo obrigatório.")
-        if re.match(r'^[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/\\\'"\\-]*$', titulo):
+        if re.match(r'^[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/\\\'"\\-]*$', tema):
             raise ValidationError('O título não pode conter apenas números ou caracteres especiais.')
 
         if not resumo:
@@ -72,5 +72,6 @@ class TrabalhoForm(forms.ModelForm):
         model = Trabalho
         fields = ['titulo', 'orientador', 'prof1', 'prof2', 'prof3', 'data', 'resumo', 'palavras_ch', 'periodo', 'arquivo']
 
-
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['prof3'].required = False

@@ -23,7 +23,7 @@
               <tbody>
                 {% for plano in planos %}
                     <tr>
-                        <td>{{ plano.titulo }}</td>
+                        <td>{{ plano.tema }}</td>
                         <td>{{ plano.resumo }}</td>
                         <td>{{ plano.user_orientador.get_full_name }}</td>
                         <td>{{ plano.obj_especifico }}</td>
@@ -32,7 +32,7 @@
                         <td>{{ plano.status }}</td>
                         <td>
                              <!-- Botão de visualização para todos os planos -->
-                            <a href="">Visualizar</a>
+                            <a href="{{ plano.arquivo.url }}" class="btn btn-secondary">Visualizar PDF</a>
                             {% if plano.status == "Em andamento" %}
                                 <a href="">Editar</a>
                             {% endif %}

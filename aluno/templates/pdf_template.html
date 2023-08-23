@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Adicione os estilos diretamente aqui para garantir que sejam renderizados */
+        .table-bordered {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .table-bordered th, .table-bordered td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            align-items: center; /* Centralizar verticalmente */
+        }
+
+        .container > td {
+            margin-right: 10px; /* Espaço entre os elementos */
+        }
+        .cabecalho{
+            margin-top: 1px;
+            font-size: 16px;
+            margin-bottom: 1px;
+            align-items: center;
+            text-align: center;
+        }
+        .titulo{
+            margin-top: 20px;
+            font-size: 20px;
+            margin-bottom: 2px;
+            align-items: center;
+            text-align: center;
+        }
+        .sessao{
+            font-size: 16px;
+            align-items: center;
+            text-align: center;
+        }
+        .inline-header {
+            display: inline;
+            margin-right: 10px; /* Espaço entre o título e os dados */
+        }
+
+        .inline-data {
+            display: inline;
+        }
+        .texto {
+            font-size: 16px;
+            font-family: Arial, sans-serif; /* Fonte Arial */
+            line-height: 2px; /* Espaçamento entre linhas */
+            text-align: justify; /* Texto justificado */
+
+        }
+        .campos{
+            font-size: 16px;
+        }
+        .texto-justificado {
+            text-align: justify; /* Texto justificado */
+            font-family: Arial, sans-serif; /* Fonte Arial */
+            font-size: 16px; /* Tamanho da fonte 12 */
+            line-height: 1.5; /* Espaçamento entre linhas */
+        }
+    </style>
+</head>
+<body>
+    <table class="table-bordered">
+        <tr>
+            <td class="text-center" style="width: 20%;">
+               <img src="data:imagen/png;base64,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
+" alt="Minha imagem" width="100">
+            </td>
+            <td  style="width: 80%;">
+                <p class="cabecalho">UNIVERSIDADE FEDERAL DO ACRE</p>
+                <p class="cabecalho">CENTRO DE CIÊNCIAS EXATAS E TECNOLÓGICAS</p>
+                <p class="cabecalho">BACHARELADO EM SISTEMAS DE INFORMAÇÃO</p>
+            </td>
+        </tr>
+    </table>
+
+    <p class="titulo" >Plano de Trabalho para Estágio Supervisionado</p>
+
+    <table class="table-bordered">
+        <tr>
+            <th class="sessao" style="width: 100%;">Dados do aluno</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="container">
+                    <h1 class="inline-header campos">Tema:</h1>
+                    <p class="inline-data texto">{{ plano.tema }}</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="container">
+                    <h1 class="inline-header campos">Discente:</h1>
+                    <p class="inline-data texto">{{ plano.user.get_full_name }}</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="table-bordered">
+        <tr>
+            <th class="sessao" style="width: 100%;">Dados da Proposta</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="container">
+                    <h1 class="inline-header campos">Resumo:</h1>
+                    <p class="inline-data texto">{{ plano.resumo|linebreaks }}</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="container">
+                    <h1 class="inline-header campos">Objetivo:</h1>
+                    <p class="inline-data texto">{{ plano.objetivo|linebreaks }}</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="container">
+                    <h1 class="inline-header campos">Objetivo específico:</h1>
+                    <p class="inline-data texto">{{ plano.obj_especifico|linebreaks }}</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="container">
+                    <h1 class="inline-header campos">Motivação:</h1>
+                     <p style="text-align: justify; font-family: Arial, sans-serif; font-size: 16px; display: inline;">
+                        {{ plano.motivacao }}
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
