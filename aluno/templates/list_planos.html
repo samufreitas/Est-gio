@@ -1,48 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Listar Planos</title>
-</head>
-<body>
-     <h1>Planos do Usuário</h1>
+{% extends 'aluno/base_aluno.html' %}
+{% load static %}
+{% block container %}
+     <h1>Lista de planos</h1>
     {% if planos %}
-        <table>
-            <tr>
-                <th>Título</th>
-                <th>Resumo</th>
-                <th>Orientador</th>
-                <th>Obejetivo específico</th>
-                <th>Motivação</th>
-                <th>Periodo</th>
-                <th>Status</th>
-                <th>Ações</th>
-
-                <!-- Adicione outras colunas aqui, se desejar -->
-            </tr>
-            {% for plano in planos %}
+        <div class="imagem container-fluid">
+            <img class="imagem" id="img" src="{% static 'img/file-earmark-plus.svg' %}" alt="Minha imagem">
+        </div>
+        <div class="table-responsive">
+            <table class="table container-fluid mt-4">
+              <thead class="bg-success">
                 <tr>
-                    <td>{{ plano.titulo }}</td>
-                    <td>{{ plano.resumo }}</td>
-                    <td>{{ plano.user_orientador.get_full_name }}</td>
-                    <td>{{ plano.obj_especifico }}</td>
-                    <td>{{ plano.motivacao }}</td>
-                    <td>{{ plano.periodo }}</td>
-                    <td>{{ plano.status }}</td>
-                    <td>
-                         <!-- Botão de visualização para todos os planos -->
-                        <a href="">Visualizar</a>
-                        {% if plano.status == "Em andamento" %}
-                            <a href="">Editar</a>
-                        {% endif %}
-                    </td>
-
-                    <!-- Adicione outras colunas aqui, se desejar -->
+                    <th>Título</th>
+                    <th>Resumo</th>
+                    <th>Orientador</th>
+                    <th>Obejetivo específico</th>
+                    <th>Motivação</th>
+                    <th>Periodo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
                 </tr>
-            {% endfor %}
-        </table>
+              </thead>
+              <tbody>
+                {% for plano in planos %}
+                    <tr>
+                        <td>{{ plano.titulo }}</td>
+                        <td>{{ plano.resumo }}</td>
+                        <td>{{ plano.user_orientador.get_full_name }}</td>
+                        <td>{{ plano.obj_especifico }}</td>
+                        <td>{{ plano.motivacao }}</td>
+                        <td>{{ plano.periodo }}</td>
+                        <td>{{ plano.status }}</td>
+                        <td>
+                             <!-- Botão de visualização para todos os planos -->
+                            <a href="">Visualizar</a>
+                            {% if plano.status == "Em andamento" %}
+                                <a href="">Editar</a>
+                            {% endif %}
+                        </td>
+
+                        <!-- Adicione outras colunas aqui, se desejar -->
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
     {% else %}
         <p>Nenhum plano encontrado.</p>
     {% endif %}
-</body>
-</html>
+    <div class="pagination d-flex justify-content-center align-items-center">
+        <span class="step-links">
+            {% if planos.has_previous %}
+                <a href="?page=1"  class="btn btn-secondary">&laquo; primeiro</a>
+                <a href="?page={{ planos.previous_page_number }}" class="btn btn-secondary">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ planos.number }} de {{ planos.paginator.num_pages }}.
+            </span>
+
+            {% if planos.has_next %}
+                <a href="?page={{ planos.next_page_number }}"  class="btn btn-secondary">próximo</a>
+                <a href="?page={{ planos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

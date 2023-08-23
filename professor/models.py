@@ -15,7 +15,7 @@ class Disciplina(models.Model):
 
 
 class Periodo(models.Model):
-    descricao = models.CharField('Descrição', max_length=150)
+    descricao = models.CharField('Descrição', max_length=150, unique=True)
 
     class Meta:
         verbose_name = 'Período'
@@ -28,8 +28,8 @@ class Periodo(models.Model):
 
 
 class PeriodoDisc(models.Model):
-    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)  # Atributo de chave estrageira
-    periodo = models.ForeignKey(Periodo, on_delete=models.RESTRICT)  # Atributo de chave estrageira
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
+    periodo = models.ForeignKey(Periodo, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name = 'Periodo_Disciplina'
@@ -38,26 +38,8 @@ class PeriodoDisc(models.Model):
 
     # Retorna o nome da categoria
     def __str__(self):
-        return f'{self.disciplina.nome} do {self.periodo.descricao}'
+        return f'{self.disciplina.nome} {self.periodo.descricao}'
 
 
 
 
-class Trabalho(models.Model):
-    titulo = models.CharField('Titulo', max_length=60)
-    autor = models.CharField('Autor', max_length=60)
-    orientador = models.CharField('Orientador', max_length=60)
-    data = models.DateField()
-    banca = models.CharField('Banca', max_length=150)
-    resumo = models.TextField('Resumo', blank=False, null=True)  # blank= não obrigatorio/null=aceita valor nulo
-    palavras_ch = models.CharField('Palavras chaves', max_length=60)
-    arquivo = models.FileField('Arquivo', upload_to="media/Trabalhos/")
-
-    class Meta:
-        verbose_name = 'Trabalho'
-        verbose_name_plural = 'Trabalhos'
-        ordering = ['id']
-
-    # Retorna o nome da categoria
-    def __str__(self):
-        return self.titulo

@@ -1,15 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastar plano</title>
-</head>
-<body>
-   <h1>Cadastrar Plano</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Salvar">
-    </form>
-</body>
-</html>
+{% extends 'aluno/base_aluno.html' %}
+{% load widget_tweaks %}
+{% block container %}
+    <style>
+        .input-curto {
+            width: 95%;
+            border-radius: 10px;
+        }
+    </style>
+     <h2>Cadastrar Plano:</h2>
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ form.non_field_errors }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            {% endif %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row w-78 mt-3">
+                    <div class="col">
+                        <label for="{{ form.titulo.id_for_label }}" class="h4" >Título:</label>
+                        {{ form.titulo|add_class:"form-control input-curto"|attr:"autofocus" }}
+                    </div>
+                    <div class="col">
+                        <label for="{{ form.user_orientador.id_for_label }}" class="h4">Orientador:</label>
+                        {{ form.user_orientador|add_class:"form-control input-curto" }}
+                    </div>
+                    <div class="col">
+                        <label for="{{ form.periodo.id_for_label }}" class="h4">Período:</label>
+                        {{ form.periodo|add_class:"form-control input-curto" }}
+                    </div>
+                </div>
+                <div class="row w-78 mt-3">
+                    <div class="col">
+                        <label for="{{ form.resumo.id_for_label }}" class="h4">Resumo:</label>
+                        {{ form.resumo|add_class:"form-control input-curto" }}
+                    </div>
+                    <div class="col">
+                        <label for="{{ form.objetivo.id_for_label }}" class="h4">Objetivo:</label>
+                        {{ form.objetivo|add_class:"form-control input-curto" }}
+                    </div>
+                </div>
+                <div class="row w-78 mt-3">
+                    <div class="col">
+                        <label for="{{ form.obj_especifico.id_for_label }}" class="h4">Objetivo específico:</label>
+                        {{ form.obj_especifico|add_class:"form-control input-curto" }}
+                    </div>
+                    <div class="col">
+                        <label for="{{ form.motivacao.id_for_label }}" class="h4">Motivação:</label>
+                        {{ form.motivacao|add_class:"form-control input-curto" }}
+                    </div>
+                </div>
+                <div class="container float-right mt-3">
+                    <button type="submit" class="btn btn-success float-right mx-2">Cadastrar</button>
+                    <a href="{% url 'aluno:list_plano' %}" class="btn btn-primary float-right">Voltar</a>
+                </div>
+            </form>
+
+{% endblock %}
+

@@ -1,0 +1,14 @@
+#menu{
+    height: 100vh;
+    background: #ffffff;
+
+}
+#body{
+    background: #F5F5F5;
+}
+
+#imagem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

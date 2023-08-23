@@ -38,3 +38,26 @@ class Plano(models.Model):
     def __str__(self):
         return self.titulo
 
+class Trabalho(models.Model):
+    titulo = models.CharField('Titulo', max_length=60)
+    orientador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Orientador')
+    prof1 = models.CharField('Professor1', max_length=60)
+    prof2 = models.CharField('Professor2', max_length=60)
+    prof3 = models.CharField('Professor3', max_length=60)
+    data = models.DateField()
+    resumo = models.TextField('Resumo')  # blank= não obrigatorio/null=aceita valor nulo
+    palavras_ch = models.CharField('Palavras chaves', max_length=60)
+    periodo = models.ForeignKey(PeriodoDisc, on_delete=models.RESTRICT)
+    user = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='Autor')
+    arquivo = models.FileField('Arquivo', upload_to="Trabalhos/")
+
+    class Meta:
+        verbose_name = 'Trabalho'
+        verbose_name_plural = 'Trabalhos'
+        ordering = ['id']
+
+    # Retorna o nome da categoria
+    def __str__(self):
+        return self.titulo
+
+

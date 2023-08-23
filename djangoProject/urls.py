@@ -21,9 +21,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls', namespace='accounts')),
-    path('', include('aluno.urls', namespace='aluno')),
-    #path('', include('django.contrib.auth.urls')),
+    path('contas/', include('accounts.urls', namespace='accounts')),
+    path('aluno/', include('aluno.urls', namespace='aluno')),
+    path('professor/', include('professor.urls', namespace='professor')),
+    path('', include('core.urls', namespace='core')),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) # Adicionar Isto
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Adicionar Isto

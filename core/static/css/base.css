@@ -1,0 +1,51 @@
+.bg-color{
+    background: #A9A9A9;
+}
+#fundo{
+    background:#DCDCDC;
+    border-radius: 10px;
+
+}
+#titulo{
+    display: flex;
+    background:#228B22;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    height: 6vh;
+    color: white;
+}
+#centro{
+    background:#A9A9A9;
+}
+#botton-menu{
+    height: 4rem;
+    margin-top: 12px;
+    background:#228B22;
+}
+#fundo-centro{
+    height: 88vh;
+    width:99.5%;
+    background: #DCDCDC;
+    margin-top: 2rem;
+    margin-left: 10px;
+    border-radius: 10px;
+}
+#form{
+    font-size: 2rem;
+}
+.imagem{
+    display: flex;
+    width: 30px;
+    height: 40px;
+    align-items: flex-end;
+    justify-content: end;
+}
+#img{
+    color: red;
+}
+#input{
+    width: 30px;
+}
