@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import PeriodoForm, PeriodoDiscForm
+from aluno.models import Plano, Trabalho
+from django.core.paginator import Paginator
 # Create your views here.
 
+def pag_professor(request):
+    return render(request, 'professor/base_professor.html')
 def add_periodo(request):
     template_name = 'periodo_form.html'
     context = {}
@@ -30,3 +34,30 @@ def add_periodo_disc(request):
     form = PeriodoDiscForm() # No caso do usuário querer apenas visualizar e não submeter nada
     context['form'] = form # form contém os dados de todos os campos do formulário preenchido pelo usuário
     return render(request, template_name, context)
+
+
+def list_plano_pro(request):
+    template_name = 'list_planos_pro.html'
+    consulta = Plano.objects.all()
+    paginator = Paginator(consulta, 10)
+
+    page_number = request.GET.get("page")
+    planos = paginator.get_page(page_number)
+    context = {
+        'planos': planos
+    }
+    return render(request, template_name, context)
+
+def aprovar_plano(request, plano_id):
+    try:
+        plano = Plano.objects.get(id=plano_id)
+        if plano.status != "Aprovado":
+            plano.status = 'Aprovado'
+            plano.save()
+            messages.success(request, "Plano aprovado com sucesso!")
+        else:
+            messages.error(request, "Esse plano já foi aprovado!")
+    except Plano.DoesNotExist:
+        messages.error(request, "Solicitação não encontrado.")
+
+    return redirect('professor:list_plano_pro')

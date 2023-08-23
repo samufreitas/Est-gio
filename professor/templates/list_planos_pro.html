@@ -1,0 +1,62 @@
+{% extends 'professor/base_professor.html' %}
+{% load static %}
+{% block container %}
+     <h1>Lista de planos</h1>
+    {% if planos %}
+        <div class="table-responsive">
+            <table class="table container-fluid mt-4">
+              <thead class="bg-success">
+                <tr>
+                    <th>Autor</th>
+                    <th>Orientador</th>
+                    <th>Periodo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for plano in planos %}
+                    <tr>
+                        <td>{{ plano.user }}</td>
+                        <td>{{ plano.user_orientador.get_full_name }}</td>
+                        <td>{{ plano.periodo }}</td>
+                        <td>{{ plano.status }}</td>
+                        <td>
+                             <div class="btn-group" role="group">
+                                <a href="{{ plano.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
+                                <form id="AprovarForm{{ plano.id }}" action="{% url 'professor:aprovar_plano' plano.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-primary mx-2" data-toggle="modal" onclick="AprovarModal({{ plano.id }})">
+                                        Aprovar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+
+                        <!-- Adicione outras colunas aqui, se desejar -->
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Nenhum plano encontrado.</p>
+    {% endif %}
+    <div class="pagination d-flex justify-content-center align-items-center">
+        <span class="step-links">
+            {% if planos.has_previous %}
+                <a href="?page=1"  class="btn btn-secondary">&laquo; primeiro</a>
+                <a href="?page={{ planos.previous_page_number }}" class="btn btn-secondary">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ planos.number }} de {{ planos.paginator.num_pages }}.
+            </span>
+
+            {% if planos.has_next %}
+                <a href="?page={{ planos.next_page_number }}"  class="btn btn-secondary">próximo</a>
+                <a href="?page={{ planos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

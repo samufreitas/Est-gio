@@ -7,40 +7,32 @@ from django.core.paginator import Paginator
 from io import BytesIO
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.template.loader import render_to_string
 from django.template.defaultfilters import linebreaks
-import pdfkit
 
 # Create your views here.
+
+
 def add_plano(request):
     template_name = 'planos_form.html'
     context = {}
-
     if request.method == 'POST':
         form = PlanoForm(request.POST)
         if form.is_valid():
             f = form.save(commit=False)
             f.user = request.user
-            f.status = 'Em andamento'
-
-            # Formatar o campo motivacao com linebreaks e estilos
+            f.status = 'Enviado'
             f.motivacao = linebreaks(f.motivacao)
-            context['plano'] = f
+            # Renderizar o template HTML com os dados do formulário
+            template = get_template('pdf_template.html')
+            context = {'plano': f}
+            html = template.render(context)
 
-            # Renderizar o template HTML para obter o conteúdo formatado
-            rendered_html = render_to_string('pdf_template.html', context)
-
-            # Configurar as opções de PDF, como tamanho da página, etc.
-            pdf_options = {
-                'page-size': 'A4',
-                'encoding': 'UTF-8',
-            }
-
-            # Gerar o PDF usando o pacote pdfkit
-            pdf_data = pdfkit.from_string(rendered_html, False, options=pdf_options)
+            # Gerar PDF a partir do HTML renderizado
+            pdf_buffer = BytesIO()
+            pisa.CreatePDF(html, dest=pdf_buffer)
 
             # Salvar o PDF no campo 'arquivo'
-            f.arquivo.save(f'plano_{f.tema}.pdf', ContentFile(pdf_data), save=False)
+            f.arquivo.save(f'plano_{f.user.get_full_name}.pdf', ContentFile(pdf_buffer.getvalue()), save=False)
             f.save()
 
             messages.success(request, 'Plano salvo com sucesso!')
@@ -78,8 +70,8 @@ def add_trabalho(request):
         else:
            print('erro')
     else:
-        form = TrabalhoForm() # No caso do usuário querer apenas visualizar e não submeter nada
-    context['form'] = form # form contém os dados de todos os campos do formulário preenchido pelo usuário
+        form = TrabalhoForm()
+    context['form'] = form
     return render(request, template_name, context)
 
 def list_trabalho(request):
