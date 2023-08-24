@@ -15,9 +15,8 @@ def add_periodo(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Período salvo com sucesso!')
-        else:
-           print('Erro')
-    form = PeriodoForm() # No caso do usuário querer apenas visualizar e não submeter nada
+    else:
+        form = PeriodoForm()
     context['form'] = form # form contém os dados de todos os campos do formulário preenchido pelo usuário
     return render(request, template_name, context)
 
@@ -31,14 +30,15 @@ def add_periodo_disc(request):
             messages.success(request, 'Período salvo com sucesso!')
         else:
            print('Erro')
-    form = PeriodoDiscForm() # No caso do usuário querer apenas visualizar e não submeter nada
+    else:
+        form = PeriodoDiscForm()
     context['form'] = form # form contém os dados de todos os campos do formulário preenchido pelo usuário
     return render(request, template_name, context)
 
 
 def list_plano_pro(request):
     template_name = 'list_planos_pro.html'
-    consulta = Plano.objects.all()
+    consulta = Plano.objects.all().exclude(status='Enviado')
     paginator = Paginator(consulta, 10)
 
     page_number = request.GET.get("page")
@@ -66,7 +66,7 @@ def aprovar_plano(request, plano_id):
 def cancelar_plano_pro(request, plano_id):
     try:
         plano = Plano.objects.get(id=plano_id)
-        if plano.status != "Aprovado":
+        if plano.status == "Aprovado":
             plano.status = 'Corrigido'
             plano.save()
             messages.success(request, "Ação realizada com sucesso!")
@@ -80,7 +80,7 @@ def cancelar_plano_pro(request, plano_id):
 
 def list_trabalho_pro(request):
     template_name = 'list_trabalho_pro.html'
-    consulta = Trabalho.objects.all()
+    consulta = Trabalho.objects.all().exclude(status='Enviado')
     paginator = Paginator(consulta, 3)
 
     page_number = request.GET.get("page")
@@ -110,7 +110,7 @@ def cancelar_trab_pro(request, trabalho_id):
         if trabalho.status == "Aprovado":
             trabalho.status = 'Corrigido'
             trabalho.save()
-            messages.success(request, "Trabalho cancelado com sucesso!")
+            messages.success(request, "Ação realizada com sucesso!")
         else:
             messages.error(request, "Essa ação ja foi realizada!")
     except Plano.DoesNotExist:
