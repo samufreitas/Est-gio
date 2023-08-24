@@ -30,6 +30,12 @@
                                         Aprovar
                                     </button>
                                 </form>
+                                <form id="CancelarForm{{ plano.id }}" action="{% url 'professor:cancelar_plano_pro' plano.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-warning " data-toggle="modal" onclick="CancelarModal({{ plano.id }})">
+                                        Cancelar
+                                    </button>
+                                </form>
                             </div>
                         </td>
 

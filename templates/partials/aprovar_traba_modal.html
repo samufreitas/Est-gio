@@ -1,0 +1,43 @@
+<!-- partials/AprovTrab_modal.html -->
+<div class="modal" id="confirmAprovTrabModal" tabindex="-1" role="dialog" aria-labelledby="confirmAprovTrabModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmAprovTrabModalLabel">Aprovação de Trabalho</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" onclick="fecharModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja confirma a aprovação desse trabalho?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" onclick="fecharModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmAprovTrabBtn" onclick="excluirItem()">Aprovar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let id_AprovTrab;
+
+    function AprovTrabModal(id) {
+        id_AprovTrab = id;
+
+        const modal = document.getElementById('confirmAprovTrabModal');
+        modal.style.display = 'block';
+    }
+
+    function fecharModal() {
+        const modal = document.getElementById('confirmAprovTrabModal');
+        modal.style.display = 'none';
+    }
+
+    function excluirItem() {
+        if (id_AprovTrab) {
+            var AprovTrabForm = document.getElementById(`AprovTrabForm${id_AprovTrab}`);
+            AprovTrabForm.submit();
+        }
+    }
+
+</script>

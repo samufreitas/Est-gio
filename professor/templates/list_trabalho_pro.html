@@ -1,0 +1,65 @@
+{% extends 'professor/base_professor.html' %}
+{% load static %}
+{% block container %}
+     <h1>Listagem de trabalhos</h1>
+    {% if trabalhos %}
+        <div class="table-responsive">
+            <table class="table container-fluid mt-4">
+                <thead class="bg-success">
+                    <tr>
+                        <th>Autor</th>
+                        <th>Orientador</th>
+                        <th>Período</th>
+                        <th>Status</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                {% for trabalho in trabalhos %}
+                    <tr>
+                        <td>{{ trabalho.user.get_full_name }}</td>
+                        <td>{{ trabalho.orientador }}</td>
+                        <td>{{ trabalho.periodo }}</td>
+                        <td>{{ trabalho.status }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary mx-5">Visualizar PDF</a>
+                                <form id="AprovTrabForm{{ trabalho.id }}" action="{% url 'professor:aprovar_trabalho' trabalho.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-primary mx-1" data-toggle="modal" onclick="AprovTrabModal({{ trabalho.id }})">
+                                        Aprovar
+                                    </button>
+                                </form>
+                                <form id="CancelarForm{{ trabalho.id }}" action="{% url 'professor:cancelar_trab_pro' trabalho.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-warning " data-toggle="modal" onclick="CancelarModal({{ trabalho.id }})">
+                                        Cancelar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <p>Nenhum plano encontrado.</p>
+    {% endif %}
+    <div class="pagination d-flex justify-content-center align-items-center">
+        <span class="step-links">
+            {% if trabalhos.has_previous %}
+                <a href="?page=1"  class="btn btn-secondary">&laquo; primeiro</a>
+                <a href="?page={{ trabalhos.previous_page_number }}" class="btn btn-secondary">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ trabalhos.number }} de {{ trabalhos.paginator.num_pages }}.
+            </span>
+
+            {% if trabalhos.has_next %}
+                <a href="?page={{ trabalhos.next_page_number }}"  class="btn btn-secondary">próximo</a>
+                <a href="?page={{ trabalhos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

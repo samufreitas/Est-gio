@@ -54,10 +54,67 @@ def aprovar_plano(request, plano_id):
         if plano.status != "Aprovado":
             plano.status = 'Aprovado'
             plano.save()
-            messages.success(request, "Plano aprovado com sucesso!")
+            messages.success(request, "Plano corrigido com sucesso!")
         else:
-            messages.error(request, "Esse plano já foi aprovado!")
+            messages.error(request, "Esse plano já foi corrigido!")
     except Plano.DoesNotExist:
         messages.error(request, "Solicitação não encontrado.")
 
     return redirect('professor:list_plano_pro')
+
+
+def cancelar_plano_pro(request, plano_id):
+    try:
+        plano = Plano.objects.get(id=plano_id)
+        if plano.status != "Aprovado":
+            plano.status = 'Corrigido'
+            plano.save()
+            messages.success(request, "Ação realizada com sucesso!")
+        else:
+            messages.error(request, "Essa ação ja foi realizada!")
+    except Plano.DoesNotExist:
+        messages.error(request, "Solicitação não encontrado.")
+
+    return redirect('professor:list_plano_pro')
+
+
+def list_trabalho_pro(request):
+    template_name = 'list_trabalho_pro.html'
+    consulta = Trabalho.objects.all()
+    paginator = Paginator(consulta, 3)
+
+    page_number = request.GET.get("page")
+    trabalhos = paginator.get_page(page_number)
+    context = {
+        'trabalhos': trabalhos
+    }
+    return render(request, template_name, context)
+
+def aprovar_trabalho(request, trabalho_id):
+    try:
+        trabalho = Trabalho.objects.get(id=trabalho_id)
+        if trabalho.status != "Aprovado":
+            trabalho.status = 'Aprovado'
+            trabalho.save()
+            messages.success(request, "Ação realizada com sucesso!")
+        else:
+            messages.error(request, "Esse trabalho já foi aprovado!")
+    except Plano.DoesNotExist:
+        messages.error(request, "Solicitação não encontrado.")
+
+    return redirect('professor:list_trabalho_pro')
+
+def cancelar_trab_pro(request, trabalho_id):
+    try:
+        trabalho = Trabalho.objects.get(id=trabalho_id)
+        if trabalho.status == "Aprovado":
+            trabalho.status = 'Corrigido'
+            trabalho.save()
+            messages.success(request, "Trabalho cancelado com sucesso!")
+        else:
+            messages.error(request, "Essa ação ja foi realizada!")
+    except Plano.DoesNotExist:
+        messages.error(request, "Solicitação não encontrado.")
+
+    return redirect('professor:list_trabalho_pro')
+
