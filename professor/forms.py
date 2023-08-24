@@ -24,4 +24,17 @@ class PeriodoDiscForm(forms.ModelForm):
         model = PeriodoDisc
         fields = ['disciplina', 'periodo']
 
+    def clean(self):
+        cleaned_data = super().clean()
+        disciplina = cleaned_data.get("disciplina")
+        periodo = cleaned_data.get("periodo")
 
+        if not disciplina:
+            raise ValidationError("Campo obrigatório.")
+        if not periodo:
+            raise ValidationError("Campo obrigatório.")
+
+        semestre = PeriodoDisc.objects.filter(disciplina=disciplina, periodo=periodo).exclude(
+            pk=self.instance.pk)
+        if semestre.exists():
+            raise ValidationError("Já existe esse período!")
