@@ -36,11 +36,11 @@ def user_new_password(request):
             messages.success(request, "Senha alterada com sucesso!")
             update_session_auth_hash(request, form.user)
             if form.user.groups.filter(name='Aluno').exists():
-                return redirect('aluno:add_plano')
-            elif form.user.groups.filter(name='Professor').exists():
-                return redirect('accounts:add_user')
-            elif form.user.groups.filter(name='Orientador').exists():
                 return redirect('aluno:list_plano')
+            elif form.user.groups.filter(name='Professor').exists():
+                return redirect('professor:pag_professor')
+            elif form.user.groups.filter(name='Orientador').exists():
+                return redirect('orientador:pag_orientador')
         else:
             messages.error(request, "Não foi possível trocar sua senha!")
     form = PasswordChangeForm(user=request.user)
@@ -65,9 +65,9 @@ def user_login(request):
             if user.groups.filter(name='Aluno').exists():
                 return redirect('aluno:add_plano')
             elif user.groups.filter(name='Professor').exists():
-                return redirect('accounts:add_user')
+                return redirect('professor:pag_professor')
             elif user.groups.filter(name='Orientador').exists():
-                return redirect('aluno:list_plano')
+                return redirect('orientador:pag_orientador')
         else:
             messages.error(request, "Usuário ou senha inválidos.")
     return render(request, template_name, {})

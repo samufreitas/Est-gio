@@ -1,7 +1,7 @@
-{% extends 'professor/base_professor.html' %}
+{% extends 'orientador/base_orientador.html' %}
 {% load static %}
 {% block container %}
-     <h1>Lista de planos</h1>
+     <h1>Lista de planos Orientador</h1>
     {% if planos %}
         <div class="table-responsive">
             <table class="table container-fluid mt-4">
@@ -24,13 +24,13 @@
                         <td>
                              <div class="btn-group" role="group">
                                 <a href="{{ plano.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
-                                <form id="AprovarForm{{ plano.id }}" action="{% url 'professor:aprovar_plano' plano.id %}" method="post">
+                                <form id="CorriPlanoForm{{ plano.id }}" action="{% url 'orientador:corrigi_plano_ori' plano.id %}" method="post">
                                     {% csrf_token %}
-                                    <button type="button" class="btn btn-primary mx-2" data-toggle="modal" onclick="AprovarModal({{ plano.id }})">
-                                        Aprovar
+                                    <button type="button" class="btn btn-primary mx-2" data-toggle="modal" onclick="CorriPlanoModal({{ plano.id }})">
+                                        Corrigir
                                     </button>
                                 </form>
-                                <form id="CancelarForm{{ plano.id }}" action="{% url 'professor:cancelar_plano_pro' plano.id %}" method="post">
+                                <form id="CancelarForm{{ plano.id }}" action="{% url 'orientador:cancelar_plano_ori' plano.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="button" class="btn btn-warning " data-toggle="modal" onclick="CancelarModal({{ plano.id }})">
                                         Cancelar

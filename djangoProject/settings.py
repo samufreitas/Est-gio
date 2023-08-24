@@ -54,6 +54,7 @@ PROJECT_APPS = [
     'professor.apps.ProfessorConfig',
     'core.apps.CoreConfig',
     'aluno.apps.AlunoConfig',
+    'orientador.apps.OrientadorConfig',
 
 ]
 
