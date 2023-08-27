@@ -1,38 +1,35 @@
 {% extends 'aluno/base_aluno.html' %}
 {% load static %}
 {% block container %}
-     <h1>Listagem de trabalhos</h1>
+     <h3>Listagem de trabalhos</h3>
     {% if trabalhos %}
         <div class="table-responsive">
             <table class="table container-fluid mt-4">
                 <thead class="bg-success">
                     <tr>
                         <th>Título</th>
-                        <th>Autor</th>
                         <th>Orientador</th>
-                        <th>Professor 1</th>
                         <th>Data</th>
-                        <th>Resumo</th>
-                        <th>Palavras chaves</th>
                         <th>Período</th>
+                        <th>Status</th>
                         <th>Arquivo</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 {% for trabalho in trabalhos %}
                     <tr>
                         <td>{{ trabalho.titulo }}</td>
-                        <td>{{ trabalho.user.get_full_name }}</td>
                         <td>{{ trabalho.orientador }}</td>
-                        <td>{{ trabalho.prof1 }}</td>
                         <td>{{ trabalho.data }}</td>
-                        <td>{{ trabalho.resumo }}</td>
-                        <td>{{ trabalho.palavras_ch }}</td>
                         <td>{{ trabalho.periodo }}</td>
+                        <td>{{ trabalho.status }}</td>
                         <td>
                             <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
-                            <button type="button" class="btn btn-primary">Corrigir</button>
                         </td>
-
+                        <td>
+                            <button type="button" class="btn btn-primary">Editar</button>
+                            <a href="" target="_blank" class="btn btn-danger">Excluir</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -40,4 +37,21 @@
     {% else %}
         <p>Nenhum plano encontrado.</p>
     {% endif %}
+     <div class="pagination d-flex justify-content-center align-items-center">
+        <span class="step-links">
+            {% if trabalhos.has_previous %}
+                <a href="?page=1"  class="btn btn-secondary">&laquo; primeiro</a>
+                <a href="?page={{ trabalhos.previous_page_number }}" class="btn btn-secondary">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ trabalhos.number }} de {{ trabalhos.paginator.num_pages }}.
+            </span>
+
+            {% if trabalhos.has_next %}
+                <a href="?page={{ trabalhos.next_page_number }}"  class="btn btn-secondary">próximo</a>
+                <a href="?page={{ trabalhos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock %}

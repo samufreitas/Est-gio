@@ -77,7 +77,12 @@ def add_trabalho(request):
 def list_trabalho(request):
     template_name = 'list_trabalho.html'
     # filter pega o usuário que está logado
-    trabalhos = Trabalho.objects.all()
+
+    consulta = Trabalho.objects.all()
+    paginator = Paginator(consulta, 2)
+
+    page_number = request.GET.get("page")
+    trabalhos = paginator.get_page(page_number)
     context = {
         'trabalhos': trabalhos
     }

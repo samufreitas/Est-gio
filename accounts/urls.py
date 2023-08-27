@@ -10,5 +10,6 @@ urlpatterns = [
     path('nova_senha/', views.user_new_password, name='user_new_password'),
     path('alterar_senha/', views.log_new_password, name='log_new_password'),
     path('voltar/', views.voltar, name='voltar'),
+    path('sair/', views.user_logout, name='user_logout'),
 
 ]

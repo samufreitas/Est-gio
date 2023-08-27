@@ -103,3 +103,8 @@ def voltar(request):
         return redirect('orientador:pag_orientador')
     else:
         return redirect('accounts:user_login')  # Redirecionar para uma página padrão para outros tipos de usuários
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('accounts:user_login')

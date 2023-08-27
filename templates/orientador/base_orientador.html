@@ -27,6 +27,12 @@
             <li class="nav-item">
                  <a href="{% url 'orientador:list_trabalho_ori' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Trabalhos</button> </a>
             </li>
+             <li class="nav-item">
+                 <a href="{% url 'accounts:log_new_password' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Alterar senha</button> </a>
+            </li>
+            <li class="nav-item">
+                 <a  href="{% url 'accounts:user_logout' %}"><button type="button" class="btn btn-danger btn-lg btn-block p-0" style="margin-top: 32px; height: 4rem">Sair</button> </a>
+            </li>
         </ul>
    </div>
 </div>

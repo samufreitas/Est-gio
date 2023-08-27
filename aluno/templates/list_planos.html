@@ -1,7 +1,7 @@
 {% extends 'aluno/base_aluno.html' %}
 {% load static %}
 {% block container %}
-     <h1>Lista de planos</h1>
+     <h3>Lista de planos</h3>
     {% if planos %}
         <div class="imagem container-fluid">
             <img class="imagem" id="img" src="{% static 'img/file-earmark-plus.svg' %}" alt="Minha imagem">
@@ -11,10 +11,7 @@
               <thead class="bg-success">
                 <tr>
                     <th>Título</th>
-                    <th>Resumo</th>
                     <th>Orientador</th>
-                    <th>Obejetivo específico</th>
-                    <th>Motivação</th>
                     <th>Periodo</th>
                     <th>Status</th>
                     <th>Ações</th>
@@ -24,10 +21,7 @@
                 {% for plano in planos %}
                     <tr>
                         <td>{{ plano.tema }}</td>
-                        <td>{{ plano.resumo }}</td>
                         <td>{{ plano.user_orientador.get_full_name }}</td>
-                        <td>{{ plano.obj_especifico }}</td>
-                        <td>{{ plano.motivacao }}</td>
                         <td>{{ plano.periodo }}</td>
                         <td>{{ plano.status }}</td>
                         <td>
