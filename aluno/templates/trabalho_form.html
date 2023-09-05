@@ -20,50 +20,49 @@
                 {% csrf_token %}
                 <div class="row w-78 mt-3">
                     <div class="col">
-                        <label for="{{ form.titulo.id_for_label }}" class="h4" >Título:</label>
-                        <span class="text-danger">*</span>
-                        {{ form.titulo|add_class:"form-control input-curto"|attr:"autofocus" }}
+                        <label for="{{ form.titulo.id_for_label }}" class="h4" >Título:<span class="text-danger">*</span></label>
+                        {{ form.titulo|add_class:"form-control input-curto"|attr:"autofocus"|attr:"placeholder:Ex: Avaliação de usabilidade ..." }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.orientador.id_for_label }}" class="h4">Orientador:</label>
+                        <label for="{{ form.orientador.id_for_label }}" class="h4">Orientador:<span class="text-danger">*</span></label>
                         {{ form.orientador|add_class:"form-control input-curto" }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.periodo.id_for_label }}" class="h4">Período:</label>
+                        <label for="{{ form.periodo.id_for_label }}" class="h4">Período:<span class="text-danger">*</span></label>
                         {{ form.periodo|add_class:"form-control input-curto" }}
                     </div>
                 </div>
                 <div class="row w-78 mt-3">
                     <div class="col">
-                        <label for="{{ form.prof1.id_for_label }}" class="h4">Professor 1:</label>
-                        {{ form.prof1|add_class:"form-control input-curto" }}
+                        <label for="{{ form.prof1.id_for_label }}" class="h4">Professor 1:<span class="text-danger">*</span></label>
+                        {{ form.prof1|add_class:"form-control input-curto"|attr:"placeholder:Ex: Marcelo" }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.prof2.id_for_label }}" class="h4">Professor 2:</label>
-                        {{ form.prof2|add_class:"form-control input-curto" }}
+                        <label for="{{ form.prof2.id_for_label }}" class="h4">Professor 2:<span class="text-danger">*</span></label>
+                        {{ form.prof2|add_class:"form-control input-curto"|attr:"placeholder:Ex: Pedro" }}
                     </div>
                     <div class="col">
                         <label for="{{ form.prof3.id_for_label }}" class="h4">Professor 3:</label>
-                        {{ form.prof3|add_class:"form-control input-curto" }}
+                        {{ form.prof3|add_class:"form-control input-curto"|attr:"placeholder:Ex: Ana" }}
                     </div>
                 </div>
                 <div class="row w-78 mt-3">
                     <div class="col">
-                        <label for="{{ form.data.id_for_label }}" class="h4">Data:</label>
+                        <label for="{{ form.data.id_for_label }}" class="h4">Data:<span class="text-danger">*</span></label>
                         {{ form.data|add_class:"form-control input-curto"|attr:"type:date" }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.palavras_ch.id_for_label }}" class="h4">Palavras chaves:</label>
-                        {{ form.palavras_ch|add_class:"form-control input-curto " }}
+                        <label for="{{ form.palavras_ch.id_for_label }}" class="h4">Palavras chaves:<span class="text-danger">*</span></label>
+                        {{ form.palavras_ch|add_class:"form-control input-curto "|attr:"placeholder:Ex: Engenharia de software, mineração" }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.arquivo.id_for_label }}" class="h4">Arquivo:</label>
+                        <label for="{{ form.arquivo.id_for_label }}" class="h4">Arquivo:<span class="text-danger">*</span></label>
                         {{ form.arquivo|add_class:"form-control-file input-curto w-75"|attr:"type:file" }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.resumo.id_for_label }}" class="w-78 mt-3 h4">Resumo:</label>
-                    {{form.resumo|add_class:"form-control" }}
+                    <label for="{{ form.resumo.id_for_label }}" class="w-78 mt-3 h4">Resumo:<span class="text-danger">*</span></label>
+                    {{form.resumo|add_class:"form-control"|attr:"placeholder:Ex: Avaliação ..." }}
                 </div>
                 <div class="container float-right mt-3">
                     <button type="submit" class="btn btn-success float-right mx-2">Cadastrar</button>

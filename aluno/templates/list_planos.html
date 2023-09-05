@@ -2,10 +2,6 @@
 {% load static %}
 {% block container %}
      <h3>Lista de planos</h3>
-    {% if planos %}
-        <div class="imagem container-fluid">
-            <img class="imagem" id="img" src="{% static 'img/file-earmark-plus.svg' %}" alt="Minha imagem">
-        </div>
         <div class="table-responsive">
             <table class="table container-fluid mt-4">
               <thead class="bg-success">
@@ -13,7 +9,20 @@
                     <th>Título</th>
                     <th>Orientador</th>
                     <th>Periodo</th>
-                    <th>Status</th>
+                    <th>
+                        <div class="dropdown ">
+                          <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Status
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'aluno:list_plano' %}">Todos</a>
+                                <a class="dropdown-item" href="{% url 'aluno:listar_planos_status' 'Enviado' %}">Enviado</a>
+                                <a class="dropdown-item" href="{% url 'aluno:listar_planos_status' 'Corrigido' %}">Corrigido</a>
+                                <a class="dropdown-item" href="{% url 'aluno:listar_planos_status' 'Aprovado' %}">Aprovado</a>
+                          </div>
+                        </div>
+                    </th>
+                    <th>Arquivo</th>
                     <th>Ações</th>
                 </tr>
               </thead>
@@ -25,22 +34,37 @@
                         <td>{{ plano.periodo }}</td>
                         <td>{{ plano.status }}</td>
                         <td>
-                             <!-- Botão de visualização para todos os planos -->
                             <a href="{{ plano.arquivo.url }}" class="btn btn-secondary">Visualizar PDF</a>
-                            {% if plano.status == "Em andamento" %}
-                                <a href="">Editar</a>
+                        </td>
+                        <td>
+                            {% if plano.status == "Enviado" %}
+                                <div class="d-inline-block ">
+                                    <form id="DeleteForm{{ plano.id }}" action="{% url 'aluno:excluir_plano' plano.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" onclick="DeleteModal({{ plano.id }})">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
+                            {% else %}
+                                <div class="d-inline-block ">
+                                    <form id="DeleteForm{{ plano.id }}" action="{% url 'aluno:excluir_plano' plano.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" onclick="DeleteModal({{ plano.id }})" disabled>
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
                             {% endif %}
                         </td>
-
-                        <!-- Adicione outras colunas aqui, se desejar -->
                     </tr>
                 {% endfor %}
               </tbody>
+                <div class="text-right">
+                    <a href="{% url 'aluno:add_plano' %}" class="btn btn-success btn-sm">Adicionar novo plano</a>
+                </div>
             </table>
         </div>
-    {% else %}
-        <p>Nenhum plano encontrado.</p>
-    {% endif %}
     <div class="pagination d-flex justify-content-center align-items-center">
         <span class="step-links">
             {% if planos.has_previous %}
@@ -57,5 +81,8 @@
                 <a href="?page={{ planos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
             {% endif %}
         </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'aluno:pag_aluno' %}" class="btn btn-primary float-right">Voltar</a>
     </div>
 {% endblock %}

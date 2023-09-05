@@ -22,7 +22,7 @@
    <div class="container-fluid ">
         <ul class="nav flex-column container-fluid">
             <li class="nav-item">
-                <a href="{% url 'aluno:add_plano' %}"><button type="button" class="btn btn-secondary btn-lg btn-block p-0 " id="botton-menu">Planos</button> </a>
+                <a href="{% url 'aluno:list_plano' %}"><button type="button" class="btn btn-secondary btn-lg btn-block p-0 " id="botton-menu">Planos</button> </a>
             </li>
             <li class="nav-item">
                  <a href="{% url 'aluno:list_trabalho' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Trabalhos</button> </a>
@@ -43,6 +43,7 @@
     </div>
 <div class="container-fluid" id="fundo-centro">
     {% include 'partials/messages.html' %}
+    {% include 'partials/delete_modal.html' %}
     {% block container %}
     {% endblock %}
 </div>

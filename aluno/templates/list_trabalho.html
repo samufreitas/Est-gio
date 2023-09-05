@@ -2,7 +2,6 @@
 {% load static %}
 {% block container %}
      <h3>Listagem de trabalhos</h3>
-    {% if trabalhos %}
         <div class="table-responsive">
             <table class="table container-fluid mt-4">
                 <thead class="bg-success">
@@ -11,7 +10,19 @@
                         <th>Orientador</th>
                         <th>Data</th>
                         <th>Período</th>
-                        <th>Status</th>
+                        <th>
+                            <div class="dropdown ">
+                          <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Status
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'aluno:list_trabalho' %}">Todos</a>
+                                <a class="dropdown-item" href="{% url 'aluno:listar_trabalho_status' 'Enviado' %}">Enviado</a>
+                                <a class="dropdown-item" href="{% url 'aluno:listar_trabalho_status' 'Corrigido' %}">Corrigido</a>
+                                <a class="dropdown-item" href="{% url 'aluno:listar_trabalho_status' 'Aprovado' %}">Aprovado</a>
+                          </div>
+                        </div>
+                        </th>
                         <th>Arquivo</th>
                         <th>Ações</th>
                     </tr>
@@ -27,16 +38,34 @@
                             <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary">Editar</button>
-                            <a href="" target="_blank" class="btn btn-danger">Excluir</a>
+                              {% if trabalho.status == "Enviado" %}
+                                <div class="d-inline-block ">
+                                    <form id="DeleteForm{{ trabalho.id }}" action="{% url 'aluno:excluir_trabalho' trabalho.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" onclick="DeleteModal({{ trabalho.id }})">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
+                            {% else %}
+                                <div class="d-inline-block ">
+                                    <form id="DeleteForm{{ trabalho.id }}" action="{% url 'aluno:excluir_trabalho' trabalho.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" onclick="DeleteModal({{ trabalho.id }})" disabled>
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
+                <div class="text-right">
+                    <a href="{% url 'aluno:add_trabalho' %}" class="btn btn-success btn-sm">Adicionar novo trabalho</a>
+                </div>
             </table>
         </div>
-    {% else %}
-        <p>Nenhum plano encontrado.</p>
-    {% endif %}
+
      <div class="pagination d-flex justify-content-center align-items-center">
         <span class="step-links">
             {% if trabalhos.has_previous %}
@@ -53,5 +82,8 @@
                 <a href="?page={{ trabalhos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
             {% endif %}
         </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'aluno:pag_aluno' %}" class="btn btn-primary float-right">Voltar</a>
     </div>
 {% endblock %}

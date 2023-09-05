@@ -36,7 +36,7 @@ def user_new_password(request):
             messages.success(request, "Senha alterada com sucesso!")
             update_session_auth_hash(request, form.user)
             if form.user.groups.filter(name='Aluno').exists():
-                return redirect('aluno:list_plano')
+                return redirect('aluno:pag_aluno')
             elif form.user.groups.filter(name='Professor').exists():
                 return redirect('professor:pag_professor')
             elif form.user.groups.filter(name='Orientador').exists():
@@ -77,7 +77,7 @@ def user_login(request):
                 return redirect('accounts:user_new_password')
             elif user.groups.filter(name='Aluno').exists():
                 login(request, user)
-                return redirect('aluno:add_plano')
+                return redirect('aluno:pag_aluno')
             elif user.groups.filter(name='Professor').exists():
                 login(request, user)
                 return redirect('professor:pag_professor')
@@ -96,7 +96,7 @@ def voltar(request):
     user = request.user
 
     if user.groups.filter(name='Aluno').exists():
-        return redirect('aluno:add_plano')
+        return redirect('aluno:pag_aluno')
     elif user.groups.filter(name='Professor').exists():
         return redirect('professor:pag_professor')
     elif user.groups.filter(name='Orientador').exists():

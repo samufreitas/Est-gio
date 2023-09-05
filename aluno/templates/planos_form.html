@@ -20,35 +20,35 @@
                 {% csrf_token %}
                 <div class="row w-78 mt-3">
                     <div class="col">
-                        <label for="{{ form.tema.id_for_label }}" class="h4" >Tema:</label>
-                        {{ form.tema|add_class:"form-control input-curto"|attr:"autofocus" }}
+                        <label for="{{ form.tema.id_for_label }}" class="h4" >Tema:<span class="text-danger">*</span></label>
+                        {{ form.tema|add_class:"form-control input-curto is-required"|attr:"autofocus"|attr:"placeholder:Ex: Avaliação de usabilidade ..." }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.user_orientador.id_for_label }}" class="h4">Orientador:</label>
-                        {{ form.user_orientador|add_class:"form-control input-curto" }}
+                        <label for="{{ form.user_orientador.id_for_label }}" class="h4">Orientador:<span class="text-danger">*</span></label>
+                        {{ form.user_orientador.get_full_name|add_class:"form-control input-curto" }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.periodo.id_for_label }}" class="h4">Período:</label>
+                        <label for="{{ form.periodo.id_for_label }}" class="h4">Período:<span class="text-danger">*</span></label>
                         {{ form.periodo|add_class:"form-control input-curto" }}
                     </div>
                 </div>
                 <div class="row w-78 mt-3">
                     <div class="col">
-                        <label for="{{ form.resumo.id_for_label }}" class="h4">Resumo:</label>
+                        <label for="{{ form.resumo.id_for_label }}" class="h4">Resumo:<span class="text-danger">*</span></label>
                         {{ form.resumo|add_class:"form-control input-curto" }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.objetivo.id_for_label }}" class="h4">Objetivo:</label>
+                        <label for="{{ form.objetivo.id_for_label }}" class="h4">Objetivo:<span class="text-danger">*</span></label>
                         {{ form.objetivo|add_class:"form-control input-curto" }}
                     </div>
                 </div>
                 <div class="row w-78 mt-3">
                     <div class="col">
-                        <label for="{{ form.obj_especifico.id_for_label }}" class="h4">Objetivo específico:</label>
+                        <label for="{{ form.obj_especifico.id_for_label }}" class="h4">Objetivo específico:<span class="text-danger">*</span></label>
                         {{ form.obj_especifico|add_class:"form-control input-curto" }}
                     </div>
                     <div class="col">
-                        <label for="{{ form.motivacao.id_for_label }}" class="h4">Motivação:</label>
+                        <label for="{{ form.motivacao.id_for_label }}" class="h4">Motivação:<span class="text-danger">*</span></label>
                         {{ form.motivacao|add_class:"form-control input-curto" }}
                     </div>
                 </div>

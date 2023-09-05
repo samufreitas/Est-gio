@@ -8,22 +8,37 @@
               <thead class="bg-success">
                 <tr>
                     <th>Aluno</th>
-                    <th>Orientador</th>
                     <th>Periodo</th>
-                    <th>Status</th>
+                    <th>
+                        <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Status
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro' %}">Todos</a>
+                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Enviado' %}">Enviado</a>
+                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Corrigido' %}">Corrigido</a>
+                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Aprovado' %}">Aprovado</a>
+                          </div>
+                        </div>
+                    </th>
+                    <th>Arquivo</th>
                     <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {% for plano in planos %}
                     <tr>
-                        <td>{{ plano.user }}</td>
-                        <td>{{ plano.user_orientador.get_full_name }}</td>
+                        <td>{{ plano.user.get_full_name  }}</td>
                         <td>{{ plano.periodo }}</td>
                         <td>{{ plano.status }}</td>
                         <td>
                              <div class="btn-group" role="group">
                                 <a href="{{ plano.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
                                 <form id="AprovarForm{{ plano.id }}" action="{% url 'professor:aprovar_plano' plano.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="button" class="btn btn-primary mx-2" data-toggle="modal" onclick="AprovarModal({{ plano.id }})">
@@ -38,8 +53,6 @@
                                 </form>
                             </div>
                         </td>
-
-                        <!-- Adicione outras colunas aqui, se desejar -->
                     </tr>
                 {% endfor %}
               </tbody>
