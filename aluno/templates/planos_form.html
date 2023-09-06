@@ -25,7 +25,7 @@
                     </div>
                     <div class="col">
                         <label for="{{ form.user_orientador.id_for_label }}" class="h4">Orientador:<span class="text-danger">*</span></label>
-                        {{ form.user_orientador.get_full_name|add_class:"form-control input-curto" }}
+                        {{ form.user_orientador |add_class:"form-control input-curto" }}
                     </div>
                     <div class="col">
                         <label for="{{ form.periodo.id_for_label }}" class="h4">Período:<span class="text-danger">*</span></label>

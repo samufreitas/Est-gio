@@ -9,9 +9,15 @@ class PlanoForm(forms.ModelForm):
     user_orientador = forms.ModelChoiceField(
         queryset=User.objects.filter(groups__name='Orientador'),
         label='Orientador',
-        empty_label='Selecione um orientador',
-        to_field_name='first_name'  # Use 'username' ou outro campo único do modelo User
+        widget=forms.Select(attrs={'class': 'form-control'}),
     )
+
+    def __init__(self, *args, **kwargs):
+        super(PlanoForm, self).__init__(*args, **kwargs)
+        self.fields['user_orientador'].label_from_instance = self.get_user_full_name
+
+    def get_user_full_name(self, user):
+        return user.get_full_name()
 
     class Meta:
         model = Plano
