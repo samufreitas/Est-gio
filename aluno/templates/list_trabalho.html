@@ -30,8 +30,8 @@
                 {% for trabalho in trabalhos %}
                     <tr>
                         <td>{{ trabalho.titulo }}</td>
-                        <td>{{ trabalho.orientador }}</td>
-                        <td>{{ trabalho.data }}</td>
+                        <td>{{ trabalho.orientador.get_full_name }}</td>
+                        <td>{{ trabalho.data|date:"d/m/Y" }}</td>
                         <td>{{ trabalho.periodo }}</td>
                         <td>{{ trabalho.status }}</td>
                         <td>

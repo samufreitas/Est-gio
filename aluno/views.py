@@ -7,7 +7,6 @@ from django.core.paginator import Paginator
 from io import BytesIO
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.template.defaultfilters import linebreaks
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
@@ -31,9 +30,9 @@ def add_plano(request):
         if form.is_valid():
             f = form.save(commit=False)
             f.user = request.user
+            f.tema = f.tema.capitalize()
             f.status = 'Enviado'
 
-            f.motivacao = linebreaks(f.motivacao)
             # Renderizar o template HTML com os dados do formulário
             template = get_template('pdf_template.html')
             context = {'plano': f}
@@ -64,7 +63,7 @@ def list_plano(request, status=None):
     if status:
         consulta = consulta.filter(status=status)
 
-    paginator = Paginator(consulta, 5)  # Show 25 contacts per page.
+    paginator = Paginator(consulta, 6)  # Show 25 contacts per page.
 
     page_number = request.GET.get("page")
     planos = paginator.get_page(page_number)
@@ -75,8 +74,8 @@ def list_plano(request, status=None):
     return render(request, template_name, context)
 
 
-@login_required(login_url='/contas/login/')
-@user_passes_test(is_aluno)
+"""@login_required(login_url='/contas/login/')
+@user_passes_test(is_aluno)"""
 def add_trabalho(request):
     template_name = 'trabalho_form.html'
     context = {}
@@ -85,6 +84,7 @@ def add_trabalho(request):
         if form.is_valid():
             f = form.save(commit=False)
             f.user = request.user
+            f.titulo = f.titulo.capitalize()
             f.status = 'Enviado'
             f.save()
             messages.success(request, 'Trabalho salvo com sucesso!')
@@ -106,7 +106,7 @@ def list_trabalho(request, status=None):
     consulta = Trabalho.objects.all()#filter(user=request.user)
     if status:
         consulta = consulta.filter(status=status)
-    paginator = Paginator(consulta, 8)
+    paginator = Paginator(consulta, 6)
 
     page_number = request.GET.get("page")
     trabalhos = paginator.get_page(page_number)

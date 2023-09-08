@@ -57,7 +57,7 @@
                     </div>
                     <div class="col">
                         <label for="{{ form.arquivo.id_for_label }}" class="h4">Arquivo:<span class="text-danger">*</span></label>
-                        {{ form.arquivo|add_class:"form-control-file input-curto w-75"|attr:"type:file" }}
+                        {{ form.arquivo|add_class:"form-control-file input-curto w-75"|attr:"type:file"|attr:"accept:.pdf" }}
                     </div>
                 </div>
                 <div class="form-group">
