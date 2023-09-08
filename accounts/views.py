@@ -5,14 +5,17 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.models import User
-
+from django.contrib.auth.models import Group
 from .forms import UserForm
 # Create your views here.
 
 def add_user(request):
     template_name = 'add_user.html'
     context = {}
+
+    groups = Group.objects.all()
+    context['groups'] = groups
+
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -21,7 +24,9 @@ def add_user(request):
             f.save()
             form.save_m2m()
             messages.success(request, 'Usuário salvo com sucesso!')
-    form = UserForm()
+            return redirect('accounts:user_login')
+    else:
+        form = UserForm()
     context['form'] = form
     return render(request, template_name, context)
 
