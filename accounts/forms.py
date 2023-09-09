@@ -6,7 +6,7 @@ import re
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'groups', 'password']
+        fields = ['first_name', 'last_name', 'username', 'email', 'groups', 'password', 'is_active']
     def __str__(self):
         return f'{self.cleaned_data["first_name"]} {self.cleaned_data["last_name"]}'
     def clean(self):

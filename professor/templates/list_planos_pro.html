@@ -2,12 +2,12 @@
 {% load static %}
 {% block container %}
      <h3>Lista de planos</h3>
-    {% if planos %}
         <div class="table-responsive">
             <table class="table container-fluid mt-4">
               <thead class="bg-success">
                 <tr>
                     <th>Aluno</th>
+                     <th>Orientador</th>
                     <th>Periodo</th>
                     <th>
                         <div class="dropdown">
@@ -16,9 +16,8 @@
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{% url 'professor:list_plano_pro' %}">Todos</a>
-                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Enviado' %}">Enviado</a>
-                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Corrigido' %}">Corrigido</a>
-                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Aprovado' %}">Aprovado</a>
+                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Revisado' %}">Revisado</a>
+                                <a class="dropdown-item" href="{% url 'professor:list_plano_pro_status' 'Versão aprovada' %}">Versão aprovada</a>
                           </div>
                         </div>
                     </th>
@@ -30,12 +29,11 @@
                 {% for plano in planos %}
                     <tr>
                         <td>{{ plano.user.get_full_name  }}</td>
+                        <td>{{ plano.user_orientador.get_full_name  }}</td>
                         <td>{{ plano.periodo }}</td>
                         <td>{{ plano.status }}</td>
                         <td>
-                             <div class="btn-group" role="group">
                                 <a href="{{ plano.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
-                            </div>
                         </td>
                         <td>
                             <div class="btn-group" role="group">
@@ -58,9 +56,6 @@
               </tbody>
             </table>
         </div>
-    {% else %}
-        <p>Nenhum plano encontrado.</p>
-    {% endif %}
     <div class="pagination d-flex justify-content-center align-items-center">
         <span class="step-links">
             {% if planos.has_previous %}
@@ -77,5 +72,8 @@
                 <a href="?page={{ planos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
             {% endif %}
         </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'professor:pag_professor' %}" class="btn btn-primary float-right">Voltar</a>
     </div>
 {% endblock %}

@@ -69,8 +69,8 @@ def list_plano_pro(request, status=None):
 def aprovar_plano(request, plano_id):
     try:
         plano = Plano.objects.get(id=plano_id)
-        if plano.status != "Aprovado":
-            plano.status = 'Aprovado'
+        if plano.status != "Versão aprovada":
+            plano.status = 'Versão aprovada'
             plano.save()
             messages.success(request, "Plano corrigido com sucesso!")
         else:
@@ -86,8 +86,8 @@ def aprovar_plano(request, plano_id):
 def cancelar_plano_pro(request, plano_id):
     try:
         plano = Plano.objects.get(id=plano_id)
-        if plano.status == "Aprovado":
-            plano.status = 'Corrigido'
+        if plano.status == "Versão aprovada":
+            plano.status = 'Revisado'
             plano.save()
             messages.success(request, "Ação realizada com sucesso!")
         else:
@@ -119,8 +119,8 @@ def list_trabalho_pro(request, status=None):
 def aprovar_trabalho(request, trabalho_id):
     try:
         trabalho = Trabalho.objects.get(id=trabalho_id)
-        if trabalho.status != "Aprovado":
-            trabalho.status = 'Aprovado'
+        if trabalho.status != "Versão aprovada":
+            trabalho.status = 'Versão aprovada'
             trabalho.save()
             messages.success(request, "Ação realizada com sucesso!")
         else:
@@ -135,8 +135,8 @@ def aprovar_trabalho(request, trabalho_id):
 def cancelar_trab_pro(request, trabalho_id):
     try:
         trabalho = Trabalho.objects.get(id=trabalho_id)
-        if trabalho.status == "Aprovado":
-            trabalho.status = 'Corrigido'
+        if trabalho.status == "Versão aprovada":
+            trabalho.status = 'Revisado'
             trabalho.save()
             messages.success(request, "Ação realizada com sucesso!")
         else:

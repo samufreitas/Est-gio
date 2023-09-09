@@ -68,6 +68,7 @@
             line-height: 1.5; /* Espaçamento entre linhas */
         }
     </style>
+
 </head>
 <body>
     <table class="table-bordered">
@@ -140,13 +141,25 @@
             <td>
                 <div class="container">
                     <h1 class="inline-header campos">Motivação:</h1>
-                     <p style="text-align: justify; font-family: Arial, sans-serif; font-size: 16px; display: inline;">
-                        {{ plano.motivacao }}
+                     <p class="inline-data texto">{{ plano.objetivo|linebreaks }}</p>
                     </p>
                 </div>
             </td>
         </tr>
     </table>
+   <div style="margin-top: 5px;">
+        <p class="inline-data texto">Estou ciente que preciso cumprir os prazos de apresentações definidos pelos professores da disciplina e apresentar ao final do semestre os resultados do estágio conforme projeto.</p>
+        <br>
+        <br>
+        <p class="inline-data texto">Rio Branco-AC, {{ data }}</p>
+
+   </div>
+   <div style="margin-top: 48px;">
+        <div style="font-size: 15px; text-align: left;">Discente Estagiário</div>
+        <div style="font-size: 15px; text-align: right;">Docente Orientador</div>
+   </div>
+
 </body>
 </html>
+
 

@@ -7,17 +7,20 @@
                 <thead class="bg-success">
                     <tr>
                         <th>Aluno</th>
+                        <th>Orientador</th>
                         <th>Período</th>
-                        <th><div class="dropdown">
-                          <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Status
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{% url 'professor:list_trabalho_pro' %}">Todos</a>
-                                <a class="dropdown-item" href="{% url 'professor:list_trabalho_pro_status' 'Corrigido' %}">Corrigido</a>
-                                <a class="dropdown-item" href="{% url 'professor:list_trabalho_pro_status' 'Aprovado' %}">Aprovado</a>
-                          </div>
-                        </div></th>
+                        <th>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Status
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{% url 'professor:list_trabalho_pro' %}">Todos</a>
+                                    <a class="dropdown-item" href="{% url 'professor:list_trabalho_pro_status' 'Revisado' %}">Revisado</a>
+                                    <a class="dropdown-item" href="{% url 'professor:list_trabalho_pro_status' 'Versão aprovada' %}">Versão aprovada</a>
+                              </div>
+                            </div>
+                        </th>
                         <th>Arquivo</th>
                         <th>Ações</th>
                     </tr>
@@ -25,6 +28,7 @@
                 {% for trabalho in trabalhos %}
                     <tr>
                         <td>{{ trabalho.user.get_full_name }}</td>
+                        <td>{{ trabalho.orientador.get_full_name }}</td>
                         <td>{{ trabalho.periodo }}</td>
                         <td>{{ trabalho.status }}</td>
                         <td>
@@ -67,5 +71,8 @@
                 <a href="?page={{ trabalhos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
             {% endif %}
         </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'professor:pag_professor' %}" class="btn btn-primary float-right">Voltar</a>
     </div>
 {% endblock %}

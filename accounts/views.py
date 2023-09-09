@@ -21,10 +21,21 @@ def add_user(request):
         if form.is_valid():
             f = form.save(commit=False)
             f.set_password(f.password)
-            f.save()
-            form.save_m2m()
-            messages.success(request, 'Usuário salvo com sucesso!')
-            return redirect('accounts:user_login')
+            selected_groups = form.cleaned_data.get("groups")
+            aluno_group = Group.objects.get(name='Aluno')
+
+            if aluno_group in selected_groups.all():
+                f.is_active = True
+                f.save()
+                form.save_m2m()
+                messages.success(request, 'Usuário salvo com sucesso!')
+                return redirect('accounts:user_login')
+            else:
+                f.is_active = False
+                f.save()
+                form.save_m2m()
+                messages.success(request, 'Cadastro realizado com sucesso! Aguarde 24 horas para coordenação confirma o seu acesso ao sistema!')
+                return redirect('accounts:user_login')
     else:
         form = UserForm()
     context['form'] = form
@@ -77,10 +88,7 @@ def user_login(request):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            if user.last_login is None:
-                login(request, user)
-                return redirect('accounts:user_new_password')
-            elif user.groups.filter(name='Aluno').exists():
+            if user.groups.filter(name='Aluno').exists():
                 login(request, user)
                 return redirect('aluno:pag_aluno')
             elif user.groups.filter(name='Professor').exists():

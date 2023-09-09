@@ -8,6 +8,9 @@ from io import BytesIO
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.auth.decorators import login_required, user_passes_test
+from datetime import datetime
+import locale
+
 
 # Create your views here.
 
@@ -35,7 +38,15 @@ def add_plano(request):
 
             # Renderizar o template HTML com os dados do formulário
             template = get_template('pdf_template.html')
-            context = {'plano': f}
+
+            locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
+            data = datetime.now().date()
+
+
+            data_formatada = data
+            context = {'plano': f,
+                       'data': data_formatada
+                       }
             html = template.render(context)
 
             # Gerar PDF a partir do HTML renderizado
@@ -43,7 +54,7 @@ def add_plano(request):
             pisa.CreatePDF(html, dest=pdf_buffer)
 
             # Salvar o PDF no campo 'arquivo'
-            f.arquivo.save(f'plano_{f.user.get_full_name}.pdf', ContentFile(pdf_buffer.getvalue()), save=False)
+            f.arquivo.save(f'plano_{f.tema}.pdf', ContentFile(pdf_buffer.getvalue()), save=False)
             f.save()
 
             messages.success(request, 'Plano salvo com sucesso!')

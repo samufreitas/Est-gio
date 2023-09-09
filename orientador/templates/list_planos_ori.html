@@ -1,33 +1,46 @@
 {% extends 'orientador/base_orientador.html' %}
 {% load static %}
 {% block container %}
-     <h3>Lista de planos Orientador</h3>
-    {% if planos %}
+     <h3>Lista de planos</h3>
         <div class="table-responsive">
             <table class="table container-fluid mt-4">
               <thead class="bg-success">
                 <tr>
+                    <th>Tema</th>
                     <th>Aluno</th>
-                    <th>Orientador</th>
                     <th>Periodo</th>
-                    <th>Status</th>
+                    <th>
+                        <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Status
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'orientador:list_plano_ori' %}">Todos</a>
+                                <a class="dropdown-item" href="{% url 'orientador:list_plano_ori_status' 'Enviados' %}">Enviado</a>
+                                <a class="dropdown-item" href="{% url 'orientador:list_plano_ori_status' 'Revisado' %}">Revisados</a>
+                          </div>
+                        </div>
+                    </th>
+                    <th>Arquivo</th>
                     <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {% for plano in planos %}
                     <tr>
-                        <td>{{ plano.user }}</td>
-                        <td>{{ plano.user_orientador.get_full_name }}</td>
+                        <td>{{ plano.tema }}</td>
+                        <td>{{ plano.user.get_full_name }}</td>
                         <td>{{ plano.periodo }}</td>
                         <td>{{ plano.status }}</td>
                         <td>
-                             <div class="btn-group" role="group">
-                                <a href="{{ plano.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
+                            <a href="{{ plano.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
                                 <form id="CorriPlanoForm{{ plano.id }}" action="{% url 'orientador:corrigi_plano_ori' plano.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="button" class="btn btn-primary mx-2" data-toggle="modal" onclick="CorriPlanoModal({{ plano.id }})">
-                                        Corrigir
+                                        Revisar
                                     </button>
                                 </form>
                                 <form id="CancelarForm{{ plano.id }}" action="{% url 'orientador:cancelar_plano_ori' plano.id %}" method="post">
@@ -45,9 +58,7 @@
               </tbody>
             </table>
         </div>
-    {% else %}
-        <p>Nenhum plano encontrado.</p>
-    {% endif %}
+
     <div class="pagination d-flex justify-content-center align-items-center">
         <span class="step-links">
             {% if planos.has_previous %}
@@ -64,5 +75,8 @@
                 <a href="?page={{ planos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
             {% endif %}
         </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'orientador:pag_orientador' %}" class="btn btn-primary float-right">Voltar</a>
     </div>
 {% endblock %}

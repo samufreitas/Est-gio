@@ -1,32 +1,46 @@
 {% extends 'orientador/base_orientador.html' %}
 {% load static %}
 {% block container %}
-     <h3>Listagem de trabalhos Orientador</h3>
+     <h3>Listagem de trabalhos</h3>
     {% if trabalhos %}
         <div class="table-responsive">
             <table class="table container-fluid mt-4">
                 <thead class="bg-success">
                     <tr>
+                        <th>Tema</th>
                         <th>Aluno</th>
-                        <th>Orientador</th>
                         <th>Período</th>
-                        <th>Status</th>
-                        <th class="text-center">Ações</th>
+                        <th>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Status
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{% url 'orientador:list_trabalho_ori' %}">Todos</a>
+                                    <a class="dropdown-item" href="{% url 'orientador:list_trabalho_ori_status' 'Enviado' %}">Enviados</a>
+                                    <a class="dropdown-item" href="{% url 'orientador:list_trabalho_ori_status' 'Revisado' %}">Revisados</a>
+                              </div>
+                            </div>
+                        </th>
+                         <th>Arquivo</th>
+                        <th >Ações</th>
                     </tr>
                 </thead>
                 {% for trabalho in trabalhos %}
                     <tr>
+                        <td>{{ trabalho.titulo }}</td>
                         <td>{{ trabalho.user.get_full_name }}</td>
-                        <td>{{ trabalho.orientador }}</td>
                         <td>{{ trabalho.periodo }}</td>
                         <td>{{ trabalho.status }}</td>
                         <td>
+                            <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
+                        </td>
+                        <td>
                             <div class="btn-group" role="group">
-                                <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary mx-5">Visualizar PDF</a>
                                 <form id="CorriTrabForm{{ trabalho.id }}" action="{% url 'orientador:corrigi_trabalho_ori' trabalho.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="button" class="btn btn-primary mx-1" data-toggle="modal" onclick="CorriTrabModal({{ trabalho.id }})">
-                                        Corrigir
+                                        Revisar
                                     </button>
                                 </form>
                                 <form id="CancelarForm{{ trabalho.id }}" action="{% url 'orientador:cancelar_trab_ori' trabalho.id %}" method="post">
@@ -37,7 +51,6 @@
                                 </form>
                             </div>
                         </td>
-
                     </tr>
                 {% endfor %}
             </table>
@@ -61,5 +74,8 @@
                 <a href="?page={{ trabalhos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
             {% endif %}
         </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'orientador:pag_orientador' %}" class="btn btn-primary float-right">Voltar</a>
     </div>
 {% endblock %}
