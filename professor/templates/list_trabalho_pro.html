@@ -32,7 +32,7 @@
                         <td>{{ trabalho.periodo }}</td>
                         <td>{{ trabalho.status }}</td>
                         <td>
-                                <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
+                            <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
                         </td>
                         <td>
                             <div class="btn-group" role="group">
@@ -53,6 +53,25 @@
 
                     </tr>
                 {% endfor %}
+                <div class="container mt-1">
+                    <div class="row">
+                        <div class="col-md-7 align-content-center">
+                            <form method="GET" class="form-inline">
+                                {% csrf_token %}
+                                <div class="input-group"> <!-- Use uma classe input-group para agrupar o campo de entrada e o botão -->
+                                    <input type="text" name="query" placeholder="Pesquisar por aluno, orientador e período" class="form-control" value="{{ query|default:'' }}">
+                                    <select name="status" class="form-select mx-2">
+                                        <option value="">Filtrar por status</option>
+                                        <option value="">Todos</option>
+                                        <option value="Revisado">Revisado</option>
+                                        <option value="Versão aprovada">Versão aprovada</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </table>
         </div>
     <div class="pagination d-flex justify-content-center align-items-center">

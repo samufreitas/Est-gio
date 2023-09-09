@@ -56,6 +56,25 @@
                     </tr>
                 {% endfor %}
               </tbody>
+                <div class="container mt-1">
+                    <div class="row">
+                        <div class="col-md-6 align-content-center">
+                            <form method="GET" class="form-inline">
+                                {% csrf_token %}
+                                <div class="input-group"> <!-- Use uma classe input-group para agrupar o campo de entrada e o botão -->
+                                    <input type="text" name="query" placeholder="Pesquisar por tema ou orientador" class="form-control" value="{{ query|default:'' }}">
+                                    <select name="status" class="form-select mx-2">
+                                        <option value="">Filtrar por status</option>
+                                        <option value="">Todos</option>
+                                        <option value="Enviado">Enviado</option>
+                                        <option value="Revisado">Revisado</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </table>
         </div>
 

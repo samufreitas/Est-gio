@@ -10,6 +10,7 @@ from xhtml2pdf import pisa
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
 import locale
+from django.db.models import Q
 
 
 # Create your views here.
@@ -70,17 +71,16 @@ def add_plano(request):
 def list_plano(request, status=None):
     template_name = 'list_planos.html'
     # filter pega o usuário que está logado
-    consulta = Plano.objects.all()#filter(user=request.user)
+    consulta = Plano.objects.filter(user=request.user)
     if status:
         consulta = consulta.filter(status=status)
 
-    paginator = Paginator(consulta, 6)  # Show 25 contacts per page.
-
+    paginator = Paginator(consulta, 6)
     page_number = request.GET.get("page")
     planos = paginator.get_page(page_number)
     context = {
         'planos': planos,
-        'filtro_status': status
+        'filtro_status': status,
     }
     return render(request, template_name, context)
 
@@ -114,7 +114,7 @@ def list_trabalho(request, status=None):
     template_name = 'list_trabalho.html'
     # filter pega o usuário que está logado
 
-    consulta = Trabalho.objects.all()#filter(user=request.user)
+    consulta = Trabalho.objects.filter(user=request.user)
     if status:
         consulta = consulta.filter(status=status)
     paginator = Paginator(consulta, 6)

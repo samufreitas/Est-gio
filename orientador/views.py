@@ -3,7 +3,7 @@ from django.contrib import messages
 from aluno.models import Plano, Trabalho
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.db.models import Q
 # Create your views here.
 def is_orientador(user):
     return user.groups.filter(name='Orientador').exists()
@@ -16,18 +16,26 @@ def pag_orientador(request):
 
 @login_required(login_url='/contas/login/')
 @user_passes_test(is_orientador)
-def list_plano_ori(request, status=None):
+def list_plano_ori(request, status1=None):
     template_name = 'list_planos_ori.html'
+    query = request.GET.get('query')
+    status = request.GET.get('status')
     consulta = Plano.objects.filter(user_orientador=request.user).exclude(status='Versão aprovada')
+    if query:
+        consulta = consulta.filter(Q(tema__icontains=query) | Q(user__last_name__icontains=query) | Q(user__first_name__icontains=query))
     if status:
         consulta = consulta.filter(status=status)
-    paginator = Paginator(consulta, 10)
+    if status1:
+        consulta = consulta.filter(status=status1)
+    paginator = Paginator(consulta, 6)
 
     page_number = request.GET.get("page")
     planos = paginator.get_page(page_number)
     context = {
         'planos': planos,
-        'filtro_status': status
+        'filtro_status': status1,
+        'status': status,
+        'query': query,
     }
     return render(request, template_name, context)
 
@@ -66,18 +74,26 @@ def cancelar_plano_ori(request, plano_id):
 
 @login_required(login_url='/contas/login/')
 @user_passes_test(is_orientador)
-def list_trabalho_ori(request, status=None):
+def list_trabalho_ori(request, status1=None):
     template_name = 'list_trabalho_ori.html'
+    query = request.GET.get('query')
+    status = request.GET.get('status')
     consulta = Trabalho.objects.filter(orientador=request.user).exclude(status='Versão aprovada')
+    if query:
+        consulta = consulta.filter(Q(titulo__icontains=query) | Q(user__last_name__icontains=query) | Q(user__first_name__icontains=query))
     if status:
         consulta = consulta.filter(status=status)
-    paginator = Paginator(consulta, 3)
+    if status1:
+        consulta = consulta.filter(status=status1)
+    paginator = Paginator(consulta, 6)
 
     page_number = request.GET.get("page")
     trabalhos = paginator.get_page(page_number)
     context = {
         'trabalhos': trabalhos,
-        'filtro_status': status,
+        'filtro_status': status1,
+        'status': status,
+        'query': query,
     }
     return render(request, template_name, context)
 

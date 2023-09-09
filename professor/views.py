@@ -3,8 +3,8 @@ from django.contrib import messages
 from .forms import PeriodoForm, PeriodoDiscForm
 from aluno.models import Plano, Trabalho
 from django.core.paginator import Paginator
-# Create your views here.
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Q
 
 # Create your views here.
 def is_professor(user):
@@ -13,7 +13,7 @@ def is_professor(user):
 @login_required(login_url='/contas/login/')
 @user_passes_test(is_professor)
 def pag_professor(request):
-    return render(request, 'professor/base_professor.html')
+    return render(request, 'pag_inicio_pro.html')
 
 @login_required(login_url='/contas/login/')
 @user_passes_test(is_professor)
@@ -49,18 +49,32 @@ def add_periodo_disc(request):
 
 """@login_required(login_url='/contas/login/')
 @user_passes_test(is_professor)"""
-def list_plano_pro(request, status=None):
+def list_plano_pro(request, status2=None):
     template_name = 'list_planos_pro.html'
+    query = request.GET.get('query')
+    status = request.GET.get('status')
     consulta = Plano.objects.all().exclude(status='Enviado')
+    if query:
+        consulta = consulta.filter(
+            Q(user_orientador__last_name__icontains=query) |
+            Q(user_orientador__first_name__icontains=query) |
+            Q(user__last_name__icontains=query) |
+            Q(user__first_name__icontains=query) |
+            Q(periodo__periodo__descricao__icontains=query) |
+            Q(periodo__disciplina__nome__icontains=query))
     if status:
         consulta = consulta.filter(status=status)
-    paginator = Paginator(consulta, 7)
+    if status2:
+        consulta = consulta.filter(status=status2)
+    paginator = Paginator(consulta, 6)
 
     page_number = request.GET.get("page")
     planos = paginator.get_page(page_number)
     context = {
         'planos': planos,
-        'filtro_status': status
+        'filtro_status': status2,
+        'status': status,
+        'query': query,
     }
     return render(request, template_name, context)
 
@@ -72,7 +86,7 @@ def aprovar_plano(request, plano_id):
         if plano.status != "Versão aprovada":
             plano.status = 'Versão aprovada'
             plano.save()
-            messages.success(request, "Plano corrigido com sucesso!")
+            messages.success(request, "Plano aprovado com sucesso!")
         else:
             messages.error(request, "Esse plano já foi corrigido!")
     except Plano.DoesNotExist:
@@ -99,18 +113,32 @@ def cancelar_plano_pro(request, plano_id):
 
 """@login_required(login_url='/contas/login/')
 @user_passes_test(is_professor)"""
-def list_trabalho_pro(request, status=None):
+def list_trabalho_pro(request, status2=None):
     template_name = 'list_trabalho_pro.html'
+    query = request.GET.get('query')
+    status = request.GET.get('status')
     consulta = Trabalho.objects.all().exclude(status='Enviado')
+    if query:
+        consulta = consulta.filter(
+            Q(orientador__last_name__icontains=query) |
+            Q(orientador__first_name__icontains=query) |
+            Q(user__last_name__icontains=query) |
+            Q(user__first_name__icontains=query) |
+            Q(periodo__periodo__descricao__icontains=query) |
+            Q(periodo__disciplina__nome__icontains=query))
     if status:
         consulta = consulta.filter(status=status)
-    paginator = Paginator(consulta, 7)
+    if status2:
+        consulta = consulta.filter(status=status2)
+    paginator = Paginator(consulta, 6)
 
     page_number = request.GET.get("page")
     trabalhos = paginator.get_page(page_number)
     context = {
         'trabalhos': trabalhos,
-        'filtro_status': status
+        'filtro_status': status2,
+        'status': status,
+        'query': query,
     }
     return render(request, template_name, context)
 
