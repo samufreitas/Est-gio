@@ -3,13 +3,13 @@
 {% block container %}
      <h3>Lista de planos</h3>
         <div class="table-responsive">
-            <table class="table container-fluid mt-4">
+            <table class="table table-striped container-fluid mt-4">
               <thead class="bg-success">
                 <tr>
-                    <th>Título</th>
-                    <th>Orientador</th>
-                    <th>Periodo</th>
-                    <th>
+                    <th class="col-sm-2 text-center">Título</th>
+                    <th class="col-sm-2 text-center">Orientador</th>
+                    <th class="col-sm-2 text-center">Periodo</th>
+                    <th class="col-sm-2 text-center">
                         <div class="dropdown ">
                           <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Status
@@ -22,21 +22,21 @@
                           </div>
                         </div>
                     </th>
-                    <th>Arquivo</th>
-                    <th>Ações</th>
+                    <th class="col-sm-2 text-center">Arquivo</th>
+                    <th class="col-sm-2 text-center">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {% for plano in planos %}
                     <tr>
-                        <td>{{ plano.tema }}</td>
-                        <td>{{ plano.user_orientador.get_full_name }}</td>
-                        <td>{{ plano.periodo }}</td>
-                        <td>{{ plano.status }}</td>
-                        <td>
+                        <td class="text-center">{{ plano.tema }}</td>
+                        <td class="text-center">{{ plano.user_orientador.get_full_name }}</td>
+                        <td class="text-center">{{ plano.periodo }}</td>
+                        <td class="text-center">{{ plano.status }}</td>
+                        <td class="text-center">
                             <a href="{{ plano.arquivo.url }}" class="btn btn-secondary">Visualizar PDF</a>
                         </td>
-                        <td>
+                        <td class="text-center">
                             {% if plano.status == "Enviado" %}
                                 <div class="d-inline-block ">
                                     <form id="DeleteForm{{ plano.id }}" action="{% url 'aluno:excluir_plano' plano.id %}" method="post">

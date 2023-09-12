@@ -1,0 +1,69 @@
+{% extends 'professor/base_professor.html' %}
+{% load static %}
+{% block container %}
+     <h3>Lista de planos</h3>
+        <div class="table-responsive">
+            <table class="table table-striped container-fluid mt-4">
+              <thead class="bg-success">
+                <tr>
+                    <th class="col-sm-6 text-center">Nome do período</th>
+                    <th class="col-sm-4 text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for periodo in periodos %}
+                    <tr>
+                        <td class="text-center">{{ periodo.descricao  }}</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'professor:edit_periodo' periodo.id %}" class="btn btn-success mx-2">Editar</a>
+                                <form id="DeleteForm{{ periodo.id }}" action="{% url 'professor:excluir_periodo' periodo.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-danger " data-toggle="modal" onclick="DeleteModal({{ periodo.id }})">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+                <div class="container mt-3">
+                    <div class="row my-3">
+                        <div class="col-md-8">
+                            <form method="POST" class="form-inline">
+                                {% csrf_token %}
+                                <div class="input-group"> <!-- Use uma classe input-group para agrupar o campo de entrada e o botão -->
+                                    <input type="text" name="query" placeholder="Pesquisar por nome do período" class="form-control mx-2" value="{{ query|default:'' }}">
+                                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 text-md-right">
+                            <a href="{% url 'professor:add_periodo' %}" class="btn btn-success">Adicionar novo período</a>
+                        </div>
+                    </div>
+                </div>
+            </table>
+        </div>
+    <div class="pagination d-flex justify-content-center align-items-center">
+        <span class="step-links">
+            {% if periodos.has_previous %}
+                <a href="?page=1"  class="btn btn-secondary">&laquo; primeiro</a>
+                <a href="?page={{ periodos.previous_page_number }}" class="btn btn-secondary">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ periodos.number }} de {{ periodos.paginator.num_pages }}.
+            </span>
+
+            {% if periodos.has_next %}
+                <a href="?page={{ periodos.next_page_number }}"  class="btn btn-secondary">próximo</a>
+                <a href="?page={{ periodos.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'professor:pag_professor' %}" class="btn btn-primary float-right">Voltar</a>
+    </div>
+{% endblock %}

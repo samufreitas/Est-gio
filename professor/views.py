@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import PeriodoForm, PeriodoDiscForm
 from aluno.models import Plano, Trabalho
+from .models import PeriodoDisc, Periodo
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
@@ -10,42 +11,136 @@ from django.db.models import Q
 def is_professor(user):
     return user.groups.filter(name='Professor').exists()
 
-@login_required(login_url='/contas/login/')
-@user_passes_test(is_professor)
+"""@login_required(login_url='/contas/login/')
+@user_passes_test(is_professor)"""
 def pag_professor(request):
-    return render(request, 'pag_inicio_pro.html')
+    return render(request, 'professor/base_professor.html')
 
-@login_required(login_url='/contas/login/')
-@user_passes_test(is_professor)
+"""@login_required(login_url='/contas/login/')
+@user_passes_test(is_professor)"""
 def add_periodo(request):
     template_name = 'periodo_form.html'
     context = {}
     if request.method == 'POST':
-        form = PeriodoForm(request.POST, request.FILES)
+        form = PeriodoForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Período salvo com sucesso!')
+            return redirect('professor:list_periodo')
     else:
         form = PeriodoForm()
     context['form'] = form # form contém os dados de todos os campos do formulário preenchido pelo usuário
     return render(request, template_name, context)
 
-@login_required(login_url='/contas/login/')
-@user_passes_test(is_professor)
+def list_periodo(request):
+    template_name = 'list_periodo.html'
+    query = request.POST.get('query')
+    consulta = Periodo.objects.all()
+    if query:
+        consulta = consulta.filter(
+            Q(descricao__icontains=query))
+    paginator = Paginator(consulta, 6)
+
+    page_number = request.GET.get("page")
+    periodos = paginator.get_page(page_number)
+    context = {
+        'periodos': periodos,
+
+    }
+    return render(request, template_name, context)
+
+def edit_periodo(request, id_periodo):
+    template_name = 'periodo_form.html'
+    context = {}
+    periodo = get_object_or_404(Periodo, id=id_periodo)
+    if request.method == "POST":
+        form = PeriodoForm(request.POST, instance=periodo)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Edição de período realizada com sucesso!')
+            return redirect('professor:list_periodo')
+    else:
+        form = PeriodoForm(instance=periodo)
+    context['form'] = form
+    return render(request, template_name, context)
+
+def excluir_periodo(request, periodo_id):
+    try:
+        periodo = Periodo.objects.get(id=periodo_id)
+        if PeriodoDisc.objects.filter(periodo=periodo).exists():
+            messages.error(request, "Este período está relacionado a um semestre e não pode ser excluído.")
+        else:
+            periodo.delete()
+            messages.success(request, "Período excluído com sucesso!")
+    except Periodo.DoesNotExist:
+        messages.error(request, "Período não encontrado.")
+
+    return redirect('professor:list_periodo')
+
+
+"""@login_required(login_url='/contas/login/')
+@user_passes_test(is_professor)"""
 def add_periodo_disc(request):
     template_name = 'periodo_disc_form.html'
     context = {}
     if request.method == 'POST':
-        form = PeriodoDiscForm(request.POST, request.FILES)
+        form = PeriodoDiscForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Período salvo com sucesso!')
+            return redirect('professor:list_periodo_disc')
         else:
            print('Erro')
     else:
         form = PeriodoDiscForm()
     context['form'] = form # form contém os dados de todos os campos do formulário preenchido pelo usuário
     return render(request, template_name, context)
+
+def list_periodo_disc(request):
+    template_name = 'list_periodo_disc.html'
+    query = request.POST.get('query')
+    consulta = PeriodoDisc.objects.all()
+    if query:
+        consulta = consulta.filter(
+            Q(disciplina__nome__icontains=query) |
+            Q(periodo__descricao__icontains=query))
+    paginator = Paginator(consulta, 6)
+
+    page_number = request.GET.get("page")
+    semestres = paginator.get_page(page_number)
+    context = {
+        'semestres': semestres,
+
+    }
+    return render(request, template_name, context)
+
+def edit_periodo_disc(request, id_periodo_disc):
+    template_name = 'periodo_disc_form.html'
+    context = {}
+    periodo_disc = get_object_or_404(PeriodoDisc, id=id_periodo_disc)
+    if request.method == "POST":
+        form = PeriodoDiscForm(request.POST, instance=periodo_disc)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Semestre atualizado com sucesso!')
+            return redirect('professor:list_periodo_disc')
+    else:
+        form = PeriodoDiscForm(instance=periodo_disc)
+    context['form'] = form
+    return render(request, template_name, context)
+
+def excluir_periodo_disc(request, id_periodo_disc):
+    try:
+        periodo_disc = PeriodoDisc.objects.get(id=id_periodo_disc)
+        if Plano.objects.filter(periodo=periodo_disc).exists() or Trabalho.objects.filter(periodo=periodo_disc).exists():
+            messages.error(request, "Este período está relacionado a um semestre e não pode ser excluído.")
+        else:
+            periodo_disc.delete()
+            messages.success(request, "Semestre excluído com sucesso!")
+    except PeriodoDisc.DoesNotExist:
+        messages.error(request, "Semestre não encontrado.")
+
+    return redirect('professor:list_periodo_disc')
 
 """@login_required(login_url='/contas/login/')
 @user_passes_test(is_professor)"""

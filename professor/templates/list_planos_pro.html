@@ -3,13 +3,13 @@
 {% block container %}
      <h3>Lista de planos</h3>
         <div class="table-responsive">
-            <table class="table container-fluid mt-4">
+            <table class="table table-striped container-fluid mt-4">
               <thead class="bg-success">
                 <tr>
-                    <th>Aluno</th>
-                     <th>Orientador</th>
-                    <th>Período</th>
-                    <th>
+                    <th class="col-sm-2 text-center">Aluno</th>
+                     <th class="col-sm-2 text-center">Orientador</th>
+                    <th class="col-sm-2 text-center">Período</th>
+                    <th class="col-sm-2 text-center">
                         <div class="dropdown">
                           <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Status
@@ -21,31 +21,31 @@
                           </div>
                         </div>
                     </th>
-                    <th>Arquivo</th>
-                    <th>Ações</th>
+                    <th class="col-sm-2 text-center">Arquivo</th>
+                    <th class="col-sm-2 text-center">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {% for plano in planos %}
                     <tr>
-                        <td>{{ plano.user.get_full_name  }}</td>
-                        <td>{{ plano.user_orientador.get_full_name  }}</td>
-                        <td>{{ plano.periodo }}</td>
-                        <td>{{ plano.status }}</td>
-                        <td>
+                        <td class="text-center">{{ plano.user.get_full_name  }}</td>
+                        <td class="text-center">{{ plano.user_orientador.get_full_name  }}</td>
+                        <td class="text-center">{{ plano.periodo }}</td>
+                        <td class="text-center">{{ plano.status }}</td>
+                        <td class="text-center">
                                 <a href="{{ plano.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <div class="btn-group" role="group">
                                 <form id="AprovarForm{{ plano.id }}" action="{% url 'professor:aprovar_plano' plano.id %}" method="post">
                                     {% csrf_token %}
-                                    <button type="button" class="btn btn-primary mx-2" data-toggle="modal" onclick="AprovarModal({{ plano.id }})">
+                                    <button type="button" class="btn btn-success mx-2" data-toggle="modal" onclick="AprovarModal({{ plano.id }})">
                                         Aprovar
                                     </button>
                                 </form>
                                 <form id="CancelarForm{{ plano.id }}" action="{% url 'professor:cancelar_plano_pro' plano.id %}" method="post">
                                     {% csrf_token %}
-                                    <button type="button" class="btn btn-warning " data-toggle="modal" onclick="CancelarModal({{ plano.id }})">
+                                    <button type="button" class="btn btn-danger " data-toggle="modal" onclick="CancelarModal({{ plano.id }})">
                                         Cancelar
                                     </button>
                                 </form>
@@ -56,7 +56,7 @@
               </tbody>
                 <div class="container mt-1">
                     <div class="row">
-                        <div class="col-md-7 align-content-center">
+                        <div class="col-md-8 align-content-center">
                             <form method="GET" class="form-inline">
                                 {% csrf_token %}
                                 <div class="input-group"> <!-- Use uma classe input-group para agrupar o campo de entrada e o botão -->

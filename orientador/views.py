@@ -18,8 +18,8 @@ def pag_orientador(request):
 @user_passes_test(is_orientador)
 def list_plano_ori(request, status1=None):
     template_name = 'list_planos_ori.html'
-    query = request.GET.get('query')
-    status = request.GET.get('status')
+    query = request.POST.get('query')
+    status = request.POST.get('status')
     consulta = Plano.objects.filter(user_orientador=request.user).exclude(status='Versão aprovada')
     if query:
         consulta = consulta.filter(Q(tema__icontains=query) | Q(user__last_name__icontains=query) | Q(user__first_name__icontains=query))
@@ -76,8 +76,8 @@ def cancelar_plano_ori(request, plano_id):
 @user_passes_test(is_orientador)
 def list_trabalho_ori(request, status1=None):
     template_name = 'list_trabalho_ori.html'
-    query = request.GET.get('query')
-    status = request.GET.get('status')
+    query = request.POST.get('query')
+    status = request.POST.get('status')
     consulta = Trabalho.objects.filter(orientador=request.user).exclude(status='Versão aprovada')
     if query:
         consulta = consulta.filter(Q(titulo__icontains=query) | Q(user__last_name__icontains=query) | Q(user__first_name__icontains=query))

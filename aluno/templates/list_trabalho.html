@@ -3,14 +3,14 @@
 {% block container %}
      <h3>Listagem de trabalhos</h3>
         <div class="table-responsive">
-            <table class="table container-fluid mt-4">
+            <table class="table table-striped container-fluid mt-4">
                 <thead class="bg-success">
                     <tr>
-                        <th>Título</th>
-                        <th>Orientador</th>
-                        <th>Data</th>
-                        <th>Período</th>
-                        <th>
+                        <th class="text-center">Título</th>
+                        <th class="text-center">Orientador</th>
+                        <th class="text-center">Data</th>
+                        <th class="text-center">Período</th>
+                        <th class="text-center">
                             <div class="dropdown ">
                           <button class="btn btn-secondary dropdown-toggle float-end" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Status
@@ -23,21 +23,21 @@
                           </div>
                         </div>
                         </th>
-                        <th>Arquivo</th>
-                        <th>Ações</th>
+                        <th class="text-center">Arquivo</th>
+                        <th class="text-center">Ações</th>
                     </tr>
                 </thead>
                 {% for trabalho in trabalhos %}
                     <tr>
-                        <td>{{ trabalho.titulo }}</td>
-                        <td>{{ trabalho.orientador.get_full_name }}</td>
-                        <td>{{ trabalho.data|date:"d/m/Y" }}</td>
-                        <td>{{ trabalho.periodo }}</td>
-                        <td>{{ trabalho.status }}</td>
-                        <td>
+                        <td class="text-center">{{ trabalho.titulo }}</td>
+                        <td class="text-center">{{ trabalho.orientador.get_full_name }}</td>
+                        <td class="text-center">{{ trabalho.data|date:"d/m/Y" }}</td>
+                        <td class="text-center">{{ trabalho.periodo }}</td>
+                        <td class="text-center">{{ trabalho.status }}</td>
+                        <td class="text-center">
                             <a href="{{ trabalho.arquivo.url }}" target="_blank" class="btn btn-secondary">Visualizar PDF</a>
                         </td>
-                        <td>
+                        <td class="text-center">
                               {% if trabalho.status == "Enviado" %}
                                 <div class="d-inline-block ">
                                     <form id="DeleteForm{{ trabalho.id }}" action="{% url 'aluno:excluir_trabalho' trabalho.id %}" method="post">

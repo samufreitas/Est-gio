@@ -37,4 +37,4 @@ class PeriodoDiscForm(forms.ModelForm):
         semestre = PeriodoDisc.objects.filter(disciplina=disciplina, periodo=periodo).exclude(
             pk=self.instance.pk)
         if semestre.exists():
-            raise ValidationError("Já existe esse período!")
+            raise ValidationError("Já existe um semestre com esse nome!")

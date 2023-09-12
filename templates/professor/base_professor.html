@@ -28,10 +28,10 @@
                  <a href="{% url 'professor:list_trabalho_pro' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Trabalhos</button> </a>
             </li>
             <li class="nav-item">
-                 <a href="{% url 'professor:add_periodo' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Períodos</button> </a>
+                 <a href="{% url 'professor:list_periodo' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Períodos</button> </a>
             </li>
             <li class="nav-item">
-                 <a href="{% url 'professor:add_periodo_disc' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Semestres</button> </a>
+                 <a href="{% url 'professor:list_periodo_disc' %}"><button type="button" class="btn btn-primary btn-lg btn-block p-0 " id="botton-menu">Semestres</button> </a>
             </li>
             </li>
             <li class="nav-item">
@@ -53,6 +53,7 @@
     {% include 'partials/aprovar_plano_modal.html' %}
     {% include 'partials/aprovar_traba_modal.html' %}
     {% include 'partials/cancelar_modal.html' %}
+    {% include 'partials/delete_modal.html' %}
     {% block container %}
     {% endblock %}
 </div>

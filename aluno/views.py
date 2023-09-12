@@ -66,8 +66,8 @@ def add_plano(request):
     return render(request, template_name, context)
 
 
-"""@login_required(login_url='/contas/login/')
-@user_passes_test(is_aluno)"""
+@login_required(login_url='/contas/login/')
+@user_passes_test(is_aluno)
 def list_plano(request, status=None):
     template_name = 'list_planos.html'
     # filter pega o usuário que está logado
@@ -108,8 +108,8 @@ def add_trabalho(request):
     return render(request, template_name, context)
 
 
-"""@login_required(login_url='/contas/login/')
-@user_passes_test(is_aluno)"""
+@login_required(login_url='/contas/login/')
+@user_passes_test(is_aluno)
 def list_trabalho(request, status=None):
     template_name = 'list_trabalho.html'
     # filter pega o usuário que está logado

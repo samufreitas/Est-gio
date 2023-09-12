@@ -1,0 +1,71 @@
+{% extends 'professor/base_professor.html' %}
+{% load static %}
+{% block container %}
+     <h3>Lista de planos</h3>
+        <div class="table-responsive">
+            <table class="table table-striped container-fluid mt-4 border-2">
+              <thead class="bg-success">
+                <tr>
+                    <th class="col-sm-4 text-center">Disciplina</th>
+                     <th class="col-sm-4 text-center">Periodo</th>
+                    <th class="col-sm-4 text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for semestre in semestres %}
+                    <tr>
+                        <td class="text-center">{{ semestre.disciplina  }}</td>
+                        <td class="text-center">{{ semestre.periodo  }}</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'professor:edit_periodo_disc' semestre.id %}" class="btn btn-success mx-2">Editar</a>
+                                <form id="DeleteForm{{ semestre.id }}" action="{% url 'professor:excluir_periodo_disc' semestre.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-danger " data-toggle="modal" onclick="DeleteModal({{ semestre.id }})">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+                <div class="container mt-3">
+                    <div class="row my-3">
+                        <div class="col-md-8">
+                            <form method="POST" class="form-inline">
+                                {% csrf_token %}
+                                <div class="input-group"> <!-- Use uma classe input-group para agrupar o campo de entrada e o botão -->
+                                    <input type="text" name="query" placeholder="Pesquisar por período e disciplina" class="form-control mx-2" value="{{ query|default:'' }}">
+                                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 text-md-right">
+                            <a href="{% url 'professor:add_periodo_disc' %}" class="btn btn-success">Adicionar novo semestre</a>
+                        </div>
+                    </div>
+                </div>
+            </table>
+        </div>
+    <div class="pagination d-flex justify-content-center align-items-center">
+        <span class="step-links">
+            {% if semestres.has_previous %}
+                <a href="?page=1"  class="btn btn-secondary">&laquo; primeiro</a>
+                <a href="?page={{ semestres.previous_page_number }}" class="btn btn-secondary">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ semestres.number }} de {{ semestres.paginator.num_pages }}.
+            </span>
+
+            {% if semestres.has_next %}
+                <a href="?page={{ semestres.next_page_number }}"  class="btn btn-secondary">próximo</a>
+                <a href="?page={{ semestres.paginator.num_pages }}"  class="btn btn-secondary">último &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <div class="container float-right mt-3">
+        <a href="{% url 'professor:pag_professor' %}" class="btn btn-primary float-right">Voltar</a>
+    </div>
+{% endblock %}
