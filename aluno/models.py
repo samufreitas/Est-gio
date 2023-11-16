@@ -25,8 +25,8 @@ class Plano(models.Model):
     obj_especifico = models.TextField('Objetivo especifico', blank=False, null=True)
     motivacao = models.TextField('Motivação', blank=False, null=True)
     status = models.CharField('Status', max_length=150)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='planos')
-    user_orientador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='planos_orientados')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_aluno')
+    user_orientador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_orientados')
     periodo = models.ForeignKey(PeriodoDisc, on_delete=models.CASCADE)
     arquivo = models.FileField(upload_to='plano_pdf')
 
